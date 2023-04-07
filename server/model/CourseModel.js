@@ -52,16 +52,29 @@ const CourseSchema = mongoose.Schema({
     },
     Date: {
         type: Date,
+        required: true,
+        validate: {
+  validator: function(v) {
+    return /^\w{3}\s\w{3}\s\d{2}\s\d{4}\s\d{2}:\d{2}:\d{2}\sGMT[\+\-]\d{4}\s\([\w\s]+\)$/.test(v);
+  },
+  message: props => `${props.value} is not a valid date format (ddd MMM DD YYYY HH:mm:ss GMT+XXXX (Timezone Name))`
+}
+
     },
     Duration: {
         type: String,
-       
+        required: true,
+
     },
     Topics_Covered: {
-        type: String,
+        type:String,
+                required: true,
+
      },
     attendance_record: {
-        type: String,
+      type:String,
+      required:true
+
     },
     ref_of_lectureNotes: {
         type: String,

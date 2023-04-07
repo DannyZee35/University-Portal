@@ -3,6 +3,9 @@ import axios from "axios";
 import { tr } from "date-fns/locale";
 import { useState } from "react";
 import jwt_decode from 'jwt-decode';
+import { DateField } from '@mui/x-date-pickers/DateField';
+
+
 
 const drawerWidth = 10;
 export const CreateCourse = () => {
@@ -18,8 +21,29 @@ export const CreateCourse = () => {
     refBooks: "",
     evaluationCriteria: "",
     lectureNo: "",
+    Date:"",
+    Duration:"",
+    Topics_Covered:"",
+    attendance_record:""
+    
   });
+  const [attendanceRecordFile, setAttendanceRecordFile] = useState(null);
 
+    //handle and convert it in base 64
+    const handleImage = (e) => {
+      const file = e.target.files[0];
+      setAttendanceRecordFile(file);
+    }
+    
+
+  const setFileToBase = (file) =>{
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () =>{
+        setAttendanceRecordFile(reader.result);
+      }
+
+  }
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "contents") {
@@ -28,7 +52,7 @@ export const CreateCourse = () => {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
     } else if (name === "evaluationCriteria") {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
-    } else {
+    }  else {
       SetCourseForm({ ...CourseForm, [name]: value });
     }
   };
@@ -39,10 +63,30 @@ export const CreateCourse = () => {
     const token = JSON.parse(localStorage.getItem('token')).token;
 
  console.log("this token:" ,token);
-    const response = await axios.post("http://localhost:5000/create-course", CourseForm,
+ console.log("this token:" ,CourseForm);
+
+ const formData = new FormData();
+ formData.append('courseTitle', CourseForm.courseTitle);
+ formData.append('courseCode', CourseForm.courseCode);
+ formData.append('Section_no', CourseForm.Section_no);
+ formData.append('Instructor_name', CourseForm.Instructor_name);
+ formData.append('semester_no', CourseForm.semester_no);
+ formData.append('introduction', CourseForm.introduction);
+ formData.append('objectives', CourseForm.objectives);
+ formData.append('contents', CourseForm.contents);
+ formData.append('refBooks', CourseForm.refBooks);
+ formData.append('evaluationCriteria', CourseForm.evaluationCriteria);
+ formData.append('lectureNo', CourseForm.lectureNo);
+ formData.append('Date', CourseForm.Date);
+ formData.append('Duration', CourseForm.Duration);
+ formData.append('Topics_Covered', CourseForm.Topics_Covered);
+ formData.append('attendance_record', attendanceRecordFile);
+ const response = await axios.post("http://localhost:5000/create-course", formData,
     {
       headers:{
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
+
       }
     });
     if (response.status === 201) {
@@ -59,6 +103,11 @@ export const CreateCourse = () => {
         refBooks: "",
         evaluationCriteria: "",
         lectureNo: "",
+        Date:"",
+        Duration:"",
+        Topics_Covered:"",
+        attendance_record:""
+        
       });
     }
   }
@@ -95,6 +144,7 @@ export const CreateCourse = () => {
                 name={"courseTitle"}
                 value={CourseForm.courseTitle}
                 onChange={handleChange}
+                 
               />
               <TextField
                 type="text"
@@ -215,6 +265,54 @@ export const CreateCourse = () => {
                 value={CourseForm.lectureNo}
                 onChange={handleChange}
               />
+       <TextField
+                type="text"
+               label="YYYY/MM/DD"
+                name={"Date"}
+                value={CourseForm.Date}
+                onChange={handleChange}
+              />
+       <TextField
+                type="text"
+               label="Duration"
+                name={"Duration"}
+                value={CourseForm.Duration}
+                onChange={handleChange}
+              />
+             
+            </Stack>
+            <Typography sx={{ color: "black" }} variant="h5">
+            Topics Covered
+            </Typography>
+            <TextField
+                type="text"
+                sx={{ width: "800px" }}
+
+               label="Topics Covered"
+                name={"Topics_Covered"}
+                multiline
+                rows={4}
+                value={CourseForm.Topics_Covered}
+                onChange={handleChange}
+              />
+
+<Typography sx={{ color: "black" }} variant="h5">
+            Attendance Record
+            </Typography>
+ 
+            <Stack
+              direction="row" 
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4} 
+            >
+             <Button variant="contained" component="label">
+  Upload
+  <input hidden name="attendance_record" onChange={handleImage} accept="image/*" multiple type="file" />
+</Button>
+{attendanceRecordFile && (
+  <img src={attendanceRecordFile} />
+)}
             </Stack>
             <Button variant="contained" size="large" type="submit" color="primary" onClick={handleSubmit}> 
              Add 
