@@ -1,5 +1,5 @@
 const Course = require('../model/CourseModel');
-const cloudinray= require('../middleware/cloudinary'); 
+const cloudinary= require('../middleware/cloudinary'); 
 
 
 
@@ -22,10 +22,14 @@ const createCourse = async (req, res) => {
             Topics_Covered,
             attendance_record
         } = req.body;
-       const attendanceRecord = await cloudinray.uploader.upload(attendance_record)
-       console.log(attendanceRecord);
         const InstructorId = req.user._id;
 
+        const result = await cloudinary.uploader.upload(attendance_record, {
+            folder: 'Attendance',
+            width: 200
+          });
+      
+        
         const course = await new Course({
             Course_Instructor:InstructorId,
             courseTitle,
@@ -42,9 +46,12 @@ const createCourse = async (req, res) => {
             Date,
             Duration,
             Topics_Covered,
-            attendance_record: attendanceRecord.url
+            attendance_record: {
+                public_id: result.public_id,
+                url: result.secure_url
+              }
         });
-
+        
         const savedCourse = await course.save();
         res.status(201).json(savedCourse);
     } catch (error) {

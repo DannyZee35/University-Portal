@@ -32,7 +32,9 @@ export const CreateCourse = () => {
     //handle and convert it in base 64
     const handleImage = (e) => {
       const file = e.target.files[0];
-      setAttendanceRecordFile(file);
+    
+      setFileToBase(file);
+      console.log(file);
     }
     
 
@@ -66,6 +68,7 @@ export const CreateCourse = () => {
  console.log("this token:" ,CourseForm);
 
  const formData = new FormData();
+ formData.append('attendance_record', attendanceRecordFile); // append the file here
  formData.append('courseTitle', CourseForm.courseTitle);
  formData.append('courseCode', CourseForm.courseCode);
  formData.append('Section_no', CourseForm.Section_no);
@@ -80,13 +83,13 @@ export const CreateCourse = () => {
  formData.append('Date', CourseForm.Date);
  formData.append('Duration', CourseForm.Duration);
  formData.append('Topics_Covered', CourseForm.Topics_Covered);
- formData.append('attendance_record', attendanceRecordFile);
- const response = await axios.post("http://localhost:5000/create-course", formData,
+  const response = await axios.post("http://localhost:5000/create-course", formData,
     {
       headers:{
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data"
+        'Content-Type': 'multipart/form-data',
 
+        Authorization: `Bearer ${token}`,
+ 
       }
     });
     if (response.status === 201) {

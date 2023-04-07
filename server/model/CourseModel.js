@@ -72,8 +72,15 @@ const CourseSchema = mongoose.Schema({
 
      },
     attendance_record: {
-      type:String,
-      required:true
+        public_id:{
+            type:String,
+            required: true,
+        },
+        url:{
+            type:String,
+            required:true
+        }
+         
 
     },
     ref_of_lectureNotes: {
