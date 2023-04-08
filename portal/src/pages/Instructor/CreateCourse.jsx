@@ -1,9 +1,9 @@
 import { Container, Stack, Box, Typography, TextField, Button } from "@mui/material";
 import axios from "axios";
-import { tr } from "date-fns/locale";
 import { useState } from "react";
-import jwt_decode from 'jwt-decode';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import { CloudinaryContext } from 'cloudinary-react';
+const { URL } = window;
+
 
 
 
@@ -18,43 +18,29 @@ export const CreateCourse = () => {
     introduction: "",
     objectives: "",
     contents: "",
-    refBooks: "",
-    evaluationCriteria: "",
+    ref_books: "",
+    evaluation_criteria: "",
     lectureNo: "",
     Date:"",
     Duration:"",
     Topics_Covered:"",
-    attendance_record:""
-    
+    attendance_record: '',
+   
   });
-  const [attendanceRecordFile, setAttendanceRecordFile] = useState(null);
+ 
 
-    //handle and convert it in base 64
-    const handleImage = (e) => {
-      const file = e.target.files[0];
-    
-      setFileToBase(file);
-      console.log(file);
-    }
-    
 
-  const setFileToBase = (file) =>{
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () =>{
-        setAttendanceRecordFile(reader.result);
-      }
-
-  }
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "contents") {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
-    } else if (name === "refBooks") {
+    } else if (name === "ref_books") {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
-    } else if (name === "evaluationCriteria") {
+    } else if (name === "evaluation_criteria") {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
-    }  else {
+    } else if (name === "attendance_record") { // handle attendance record file upload
+      SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
+    } else {
       SetCourseForm({ ...CourseForm, [name]: value });
     }
   };
@@ -68,7 +54,6 @@ export const CreateCourse = () => {
  console.log("this token:" ,CourseForm);
 
  const formData = new FormData();
- formData.append('attendance_record', attendanceRecordFile); // append the file here
  formData.append('courseTitle', CourseForm.courseTitle);
  formData.append('courseCode', CourseForm.courseCode);
  formData.append('Section_no', CourseForm.Section_no);
@@ -77,12 +62,17 @@ export const CreateCourse = () => {
  formData.append('introduction', CourseForm.introduction);
  formData.append('objectives', CourseForm.objectives);
  formData.append('contents', CourseForm.contents);
- formData.append('refBooks', CourseForm.refBooks);
- formData.append('evaluationCriteria', CourseForm.evaluationCriteria);
+ formData.append('ref_books', CourseForm.ref_books);
+ formData.append('evaluation_criteria', CourseForm.evaluation_criteria);
  formData.append('lectureNo', CourseForm.lectureNo);
  formData.append('Date', CourseForm.Date);
  formData.append('Duration', CourseForm.Duration);
  formData.append('Topics_Covered', CourseForm.Topics_Covered);
+ formData.append('attendance_record', CourseForm.attendance_record); // append attendance record file to form data
+
+
+ 
+ 
   const response = await axios.post("http://localhost:5000/create-course", formData,
     {
       headers:{
@@ -103,21 +93,24 @@ export const CreateCourse = () => {
         introduction: "",
         objectives: "",
         contents: "",
-        refBooks: "",
-        evaluationCriteria: "",
+        ref_books: "",
+        evaluation_criteria: "",
         lectureNo: "",
         Date:"",
         Duration:"",
         Topics_Covered:"",
-        attendance_record:""
-        
+        attendance_record: null,
+      
       });
+ 
+
     }
   }
   catch (error) {
     console.log(error);
   }
 };
+
 
 
   return (
@@ -133,7 +126,7 @@ export const CreateCourse = () => {
         <Typography sx={{ color: "black" }} variant="h3">
           Add Course
         </Typography>
-        <Box component="form" sx={{ mt: 10 }} noValidate type="submit"> 
+        <Box component="form" sx={{ mt: 10 }} noValidate type="submit"  > 
           <Stack direction={"column"} spacing={3}>
             <Stack
               direction="row"
@@ -236,8 +229,8 @@ export const CreateCourse = () => {
               label="Reference Books"
               multiline
               rows={5}
-              name={"refBooks"}
-              value={CourseForm.refBooks}
+              name={"ref_books"}
+              value={CourseForm.ref_books}
               onChange={handleChange}
             />
 
@@ -250,8 +243,8 @@ export const CreateCourse = () => {
               label="Evaluation Criteria"
               multiline
               rows={5}
-              name={"evaluationCriteria"}
-              value={CourseForm.evaluationCriteria}
+              name={"evaluation_criteria"}
+              value={CourseForm.evaluation_criteria}
               onChange={handleChange}
             />
 
@@ -311,11 +304,11 @@ export const CreateCourse = () => {
             >
              <Button variant="contained" component="label">
   Upload
-  <input hidden name="attendance_record" onChange={handleImage} accept="image/*" multiple type="file" />
+  <input hidden name="attendance_record"   onChange={handleChange} accept="image/*"  type="file" />
 </Button>
-{attendanceRecordFile && (
-  <img src={attendanceRecordFile} />
-)}
+{CourseForm.attendance_record && (
+  <img src={URL.createObjectURL(CourseForm.attendance_record)} alt="Attendance Record" height={200} width={200} />
+  )}
             </Stack>
             <Button variant="contained" size="large" type="submit" color="primary" onClick={handleSubmit}> 
              Add 

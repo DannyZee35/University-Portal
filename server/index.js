@@ -6,13 +6,18 @@ const bodyParser = require('body-parser');
 const routes=require('./routes/authRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const cors = require('cors');
-
+const fileUpload=require('express-fileupload')
 connectDB();
 const app=express();
+
+app.use(fileUpload({
+    useTempFiles:true
+}))
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+ 
 app.use(routes);
 app.use(courseRoutes);
 
