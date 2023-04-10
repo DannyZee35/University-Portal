@@ -71,76 +71,25 @@ const CourseSchema = mongoose.Schema({
                 required: true,
 
      },
-    attendance_record: {
+    //attendance_record: {
         
-        url:{
-            type:String,
-            required:true
-        }      
-    },
+        //attendance_url:{
+        //    type:String,
+//required:true
+     //   }      
+  //  },
+    
+  // yha att ae ga
+
+  // yha tk
     ref_of_lectureNotes: {
-        type: String,
+       
+            type:String,
+         required:true
     },
-    assignmentTask: {
-        type: String,
-    },
-    Best_Solved_Assignment: {
-        type: String,
-    },
-    Avg_Solved_Assignment: {
-        type: String,
-    },
-    Worst_Solved_Assignment: {
-        type: String,
-    },
-    Quiz_Paper: {
-        type: String,
-    },
-    Best_Solved_Quiz: {
-        type: String,
-    },
-    Avg_Solved_Quiz: {
-        type: String,
-    },
-    Worst_Solved_Quiz: {
-        type: String,
-    },
-    MidTerm: {
-        type: String,
-    },
-    Best_Mid: {
-        type: String,
-    },
-    Avg_Mid: {
-        type: String,
-    },
-    Worst_Mid: {
-        type: String,
-    },
-    Final_Paper: {
-        type: String,
-    },
-    Best_Final: {
-        type: String,
-    },
-    Avg_Final: {
-        type: String,
-    },
-    Worst_Final: {
-        type: String,
-    },
-    Project_Report: {
-        type: String,
-    },
-    Course_Result: {
-        type: String,
-    },
-    CLO_Assesment: {
-        type: String,
-    },
-    Course_Review_Report: {
-        type: String,
-    },
+   
+    // yha se neche add krna
+ 
 });
 
 module.exports = mongoose.model("Course", CourseSchema);

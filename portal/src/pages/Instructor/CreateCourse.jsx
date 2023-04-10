@@ -1,11 +1,19 @@
-import { Container, Stack, Box, Typography, TextField, Button } from "@mui/material";
+import {
+  Container,
+  Stack,
+  Box,
+  Typography,
+  TextField,
+  Button, CircularProgress
+} from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
-import { CloudinaryContext } from 'cloudinary-react';
-const { URL } = window;
+import { CloudinaryContext } from "cloudinary-react";
+import {useSelector,useDispatch} from "react-redux"
+import { create_Course } from "../../features/courses/courseSlice";
 
 
-
+ const { URL } = window;
 
 const drawerWidth = 10;
 export const CreateCourse = () => {
@@ -21,15 +29,41 @@ export const CreateCourse = () => {
     ref_books: "",
     evaluation_criteria: "",
     lectureNo: "",
-    Date:"",
-    Duration:"",
-    Topics_Covered:"",
-    attendance_record: '',
-   
+    Date: "",
+    Duration: "",
+    Topics_Covered: "",
+    ref_of_lectureNotes:""
+   // att: "",
+   // ref_of_lectureNotes: null,
+    // below here
+  //  Project_Report: "",
+   // Course_Review_Report: ""
   });
+  const [loading, setLoading] = useState(false)
+//  const [postImage, setPostImage] = useState( { ref_of_lectureNotes : ""})
+const {isLoading}=useSelector((state)=>state.course)
+  const dispatch=useDispatch()
+
  
 
-
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    console.log(base64)
+    SetCourseForm({ ...CourseForm, ref_of_lectureNotes: base64 });
+  }
+  function convertToBase64(file){
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result)
+      };
+      fileReader.onerror = (error) => {
+        reject(error)
+      }
+    })
+  }
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "contents") {
@@ -38,81 +72,44 @@ export const CreateCourse = () => {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
     } else if (name === "evaluation_criteria") {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
-    } else if (name === "attendance_record") { // handle attendance record file upload
-      SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
-    } else {
+    } //else if (name === "att") {
+      //SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
+   // } 
+   // else if (name === "ref_of_lectureNotes") {
+  //    SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
+  //  }
+    // below here
+
+
+    //else if (name === "Project_Report") {
+   //   SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
+ //   }
+  //  else if (name === "Course_Review_Report") {
+  //    SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
+  //  } 
+  else {
       SetCourseForm({ ...CourseForm, [name]: value });
     }
   };
 
-  const handleSubmit= async (e)=>{
-  e.preventDefault();
-  try {
-    const token = JSON.parse(localStorage.getItem('token')).token;
-
- console.log("this token:" ,token);
- console.log("this token:" ,CourseForm);
-
- const formData = new FormData();
- formData.append('courseTitle', CourseForm.courseTitle);
- formData.append('courseCode', CourseForm.courseCode);
- formData.append('Section_no', CourseForm.Section_no);
- formData.append('Instructor_name', CourseForm.Instructor_name);
- formData.append('semester_no', CourseForm.semester_no);
- formData.append('introduction', CourseForm.introduction);
- formData.append('objectives', CourseForm.objectives);
- formData.append('contents', CourseForm.contents);
- formData.append('ref_books', CourseForm.ref_books);
- formData.append('evaluation_criteria', CourseForm.evaluation_criteria);
- formData.append('lectureNo', CourseForm.lectureNo);
- formData.append('Date', CourseForm.Date);
- formData.append('Duration', CourseForm.Duration);
- formData.append('Topics_Covered', CourseForm.Topics_Covered);
- formData.append('attendance_record', CourseForm.attendance_record); // append attendance record file to form data
-
-
- 
- 
-  const response = await axios.post("http://localhost:5000/create-course", formData,
-    {
-      headers:{
-        'Content-Type': 'multipart/form-data',
-
-        Authorization: `Bearer ${token}`,
- 
-      }
-    });
-    if (response.status === 201) {
-      console.log(response.data)
-      SetCourseForm({
-        courseTitle: "",
-        courseCode: "",
-        Section_no: "",
-        Instructor_name: "",
-        semester_no: "",
-        introduction: "",
-        objectives: "",
-        contents: "",
-        ref_books: "",
-        evaluation_criteria: "",
-        lectureNo: "",
-        Date:"",
-        Duration:"",
-        Topics_Covered:"",
-        attendance_record: null,
-      
-      });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = JSON.parse(localStorage.getItem("token")).token;
  
 
+     
+     await dispatch(create_Course(CourseForm));
+     setLoading(true);
+     {/** FROM HERE  */}
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-  }
-  catch (error) {
-    console.log(error);
-  }
-};
+  };
 
-
-
+  
   return (
     <>
       <Container
@@ -126,7 +123,7 @@ export const CreateCourse = () => {
         <Typography sx={{ color: "black" }} variant="h3">
           Add Course
         </Typography>
-        <Box component="form" sx={{ mt: 10 }} noValidate type="submit"  > 
+        <form type="submit"  encType="multipart/form-data">
           <Stack direction={"column"} spacing={3}>
             <Stack
               direction="row"
@@ -140,7 +137,6 @@ export const CreateCourse = () => {
                 name={"courseTitle"}
                 value={CourseForm.courseTitle}
                 onChange={handleChange}
-                 
               />
               <TextField
                 type="text"
@@ -261,60 +257,144 @@ export const CreateCourse = () => {
                 value={CourseForm.lectureNo}
                 onChange={handleChange}
               />
-       <TextField
+              <TextField
                 type="text"
-               label="YYYY/MM/DD"
+                label="YYYY/MM/DD"
                 name={"Date"}
                 value={CourseForm.Date}
                 onChange={handleChange}
               />
-       <TextField
+              <TextField
                 type="text"
-               label="Duration"
+                label="Duration"
                 name={"Duration"}
                 value={CourseForm.Duration}
                 onChange={handleChange}
               />
-             
             </Stack>
             <Typography sx={{ color: "black" }} variant="h5">
-            Topics Covered
+              Topics Covered
             </Typography>
             <TextField
-                type="text"
-                sx={{ width: "800px" }}
-
-               label="Topics Covered"
-                name={"Topics_Covered"}
-                multiline
-                rows={4}
-                value={CourseForm.Topics_Covered}
-                onChange={handleChange}
-              />
-
-<Typography sx={{ color: "black" }} variant="h5">
-            Attendance Record
-            </Typography>
- 
-            <Stack
-              direction="row" 
+              type="text"
+              sx={{ width: "800px" }}
+              label="Topics Covered"
+              name={"Topics_Covered"}
+              multiline
+              rows={4}
+              value={CourseForm.Topics_Covered}
+              onChange={handleChange}
+            />
+            {/** 
+            <Stack direction="row"
               justifyContent="flex-start"
               alignItems="flex-start"
-              spacing={4} 
-            >
-             <Button variant="contained" component="label">
-  Upload
-  <input hidden name="attendance_record"   onChange={handleChange} accept="image/*"  type="file" />
-</Button>
-{CourseForm.attendance_record && (
-  <img src={URL.createObjectURL(CourseForm.attendance_record)} alt="Attendance Record" height={200} width={200} />
-  )}
-            </Stack>
-            <Button variant="contained" size="large" type="submit" color="primary" onClick={handleSubmit}> 
-             Add 
-            </Button>
+              spacing={4}>
+
+
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                  Attendance Record
+                </Typography>
+
+            <Stack
+               direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="att"
+                      onChange={handleChange}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.att && (
+                    <img
+                      src={URL.createObjectURL(CourseForm.att)}
+                      alt="Attendance Record"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+              </Stack>
+*/}
+                <Typography sx={{ color: "black" }} variant="h5">
+                  Reference of Lecture Notes
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="ref_of_lectureNotes"
+                      onChange={(e) => handleFileUpload(e)}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.ref_of_lectureNotes && (
+                    <img
+                      src={CourseForm.ref_of_lectureNotes}
+                      alt="Lecture Notes"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+                {/* 
+              </Stack>
+
+*/}
+
+
+
+              {/* For Assingment Tasks  */}
+
+             {/** yha se neche */}
+
+            {/*  Project Report */}
+        
+
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                variant="contained"
+                size="large"
+                type="submit"
+                color="primary"
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            )}
+
           </Stack>
-        </Box>
+        </form>
       </Container>
     </>
   );
