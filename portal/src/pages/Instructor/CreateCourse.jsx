@@ -9,11 +9,11 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { CloudinaryContext } from "cloudinary-react";
-import {useSelector,useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { create_Course } from "../../features/courses/courseSlice";
 
 
- const { URL } = window;
+const { URL } = window;
 
 const drawerWidth = 10;
 export const CreateCourse = () => {
@@ -32,27 +32,71 @@ export const CreateCourse = () => {
     Date: "",
     Duration: "",
     Topics_Covered: "",
-    ref_of_lectureNotes:""
-   // att: "",
-   // ref_of_lectureNotes: null,
-    // below here
-  //  Project_Report: "",
-   // Course_Review_Report: ""
+    attendance_record: "",
+    ref_of_lectureNotes: "",
+    assignmentTask:"",
+    Best_Solved_Assignment: "",
+    Avg_Solved_Assignment: "",
+    Worst_Solved_Assignment: "",
+    Quiz_Paper: "",
+    Best_Solved_Quiz: "",
+    Avg_Solved_Quiz: "",
+    Worst_Solved_Quiz: "",
+    MidTerm: "",
+    Best_Mid: "",
+    Avg_Mid: "",
+    Worst_Mid: "",
+    Final_Paper: "",
+    Best_Final: "",
+    Avg_Final: "",
+    Worst_Final: "",
+    Project_Report: "",
+    Course_Result: "",
+    CLO_Assesment: "",
+    ReviewReport: ""
   });
-  const [loading, setLoading] = useState(false)
-//  const [postImage, setPostImage] = useState( { ref_of_lectureNotes : ""})
-const {isLoading}=useSelector((state)=>state.course)
-  const dispatch=useDispatch()
-
  
+ 
+  const [projectReportFileName, setProjectReportFileName] = useState("");
+  const [reviewReportFileName, setReviewReportFileName] = useState("");
 
-  const handleFileUpload = async (e) => {
+  const { isLoading } = useSelector((state) => state.course)
+  const dispatch = useDispatch()
+
+
+  const handleFileUpload = async (e, fieldName) => {
     const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    console.log(base64)
-    SetCourseForm({ ...CourseForm, ref_of_lectureNotes: base64 });
-  }
-  function convertToBase64(file){
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      SetCourseForm({
+        ...CourseForm,
+        [fieldName]: reader.result,
+      });
+    };
+    const fileName = file.name;
+    if (fieldName === "Project_Report") {
+      setProjectReportFileName(fileName);
+    } else if (fieldName === "ReviewReport") {
+      setReviewReportFileName(fileName);
+    }
+  };
+    {/**
+  const handleFileUpload = async (e, fieldName) => {
+    const file = e.target.files[0];
+    const blob = new Blob([file], { type: file.type });
+  
+    SetCourseForm({ ...CourseForm, [fieldName]: blob.toString() });
+    const fileName = file.name;
+    if (fieldName === "Project_Report") {
+      setProjectReportFileName(fileName);
+    } else if (fieldName === "ReviewReport") {
+      setReviewReportFileName(fileName);
+    }
+  };
+  
+
+  function convertToBase64(file) {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -63,7 +107,7 @@ const {isLoading}=useSelector((state)=>state.course)
         reject(error)
       }
     })
-  }
+  } */}
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "contents") {
@@ -73,21 +117,10 @@ const {isLoading}=useSelector((state)=>state.course)
     } else if (name === "evaluation_criteria") {
       SetCourseForm({ ...CourseForm, [name]: value.split(",") });
     } //else if (name === "att") {
-      //SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
-   // } 
-   // else if (name === "ref_of_lectureNotes") {
-  //    SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
-  //  }
-    // below here
-
-
-    //else if (name === "Project_Report") {
-   //   SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
- //   }
-  //  else if (name === "Course_Review_Report") {
-  //    SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
-  //  } 
-  else {
+    //SetCourseForm({ ...CourseForm, [name]: event.target.files[0] });
+    // } 
+  
+    else {
       SetCourseForm({ ...CourseForm, [name]: value });
     }
   };
@@ -95,21 +128,16 @@ const {isLoading}=useSelector((state)=>state.course)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = JSON.parse(localStorage.getItem("token")).token;
- 
-
-     
-     await dispatch(create_Course(CourseForm));
-     setLoading(true);
-     {/** FROM HERE  */}
+ await dispatch(create_Course(CourseForm));
+ console.log(CourseForm)
+      
+   
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
-  
+
   return (
     <>
       <Container
@@ -123,7 +151,7 @@ const {isLoading}=useSelector((state)=>state.course)
         <Typography sx={{ color: "black" }} variant="h3">
           Add Course
         </Typography>
-        <form type="submit"  encType="multipart/form-data">
+        <form type="submit" encType="multipart/form-data">
           <Stack direction={"column"} spacing={3}>
             <Stack
               direction="row"
@@ -285,14 +313,11 @@ const {isLoading}=useSelector((state)=>state.course)
               value={CourseForm.Topics_Covered}
               onChange={handleChange}
             />
-            {/** 
+
             <Stack direction="row"
               justifyContent="flex-start"
               alignItems="flex-start"
               spacing={4}>
-
-
-
               <Stack direction="column"
                 justifyContent="flex-start"
                 alignItems="flex-start"
@@ -303,8 +328,8 @@ const {isLoading}=useSelector((state)=>state.course)
                   Attendance Record
                 </Typography>
 
-            <Stack
-               direction="row"
+                <Stack
+                  direction="row"
                   justifyContent="flex-start"
                   alignItems="flex-start"
                   spacing={4}
@@ -313,29 +338,29 @@ const {isLoading}=useSelector((state)=>state.course)
                     Upload
                     <input
                       hidden
-                      name="att"
-                      onChange={handleChange}
+                      name="attendance_record"
+                      onChange={(e) => handleFileUpload(e, "attendance_record")}
                       accept="image/*"
                       type="file"
                     />
                   </Button>
-                  {CourseForm.att && (
+                  {CourseForm.attendance_record && (
                     <img
-                      src={URL.createObjectURL(CourseForm.att)}
+                      src={CourseForm.attendance_record}
                       alt="Attendance Record"
                       height={200}
                       width={200}
                     />
                   )}
                 </Stack>
+              </Stack>
 
               <Stack direction="column"
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 spacing={4}>
 
-              </Stack>
-*/}
+
                 <Typography sx={{ color: "black" }} variant="h5">
                   Reference of Lecture Notes
                 </Typography>
@@ -351,7 +376,7 @@ const {isLoading}=useSelector((state)=>state.course)
                     <input
                       hidden
                       name="ref_of_lectureNotes"
-                      onChange={(e) => handleFileUpload(e)}
+                      onChange={(e) => handleFileUpload(e, "ref_of_lectureNotes")}
                       accept="image/*"
                       type="file"
                     />
@@ -359,25 +384,826 @@ const {isLoading}=useSelector((state)=>state.course)
                   {CourseForm.ref_of_lectureNotes && (
                     <img
                       src={CourseForm.ref_of_lectureNotes}
-                      alt="Lecture Notes"
+                      alt="ref of lectureNotes"
                       height={200}
                       width={200}
                     />
                   )}
                 </Stack>
-                {/* 
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                  Assignment Question Paper
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="assignmentTask"
+                      onChange={(e) => handleFileUpload(e, "assignmentTask")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.assignmentTask && (
+                    <img
+                      src={CourseForm.assignmentTask}
+                      alt="Assignment Task"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            </Stack>
+
+
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+<Stack direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4}>
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Best Solved Assignment         
+                       </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Best_Solved_Assignment"
+                      onChange={(e) => handleFileUpload(e, "Best_Solved_Assignment")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Best_Solved_Assignment && (
+                    <img
+                      src={CourseForm.Best_Solved_Assignment}
+                      alt="Best Solved Assignment"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Avg Solved Assignment  
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Avg_Solved_Assignment"
+                      onChange={(e) => handleFileUpload(e, "Avg_Solved_Assignment")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Avg_Solved_Assignment && (
+                    <img
+                      src={CourseForm.Avg_Solved_Assignment}
+                      alt="Avg Solved Assignment"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Worst Solved Assignment
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Worst_Solved_Assignment"
+                      onChange={(e) => handleFileUpload(e, "Worst_Solved_Assignment")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Worst_Solved_Assignment && (
+                    <img
+                      src={CourseForm.Worst_Solved_Assignment}
+                      alt="Worst Solved Assignment"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            </Stack>
+
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+<Stack direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4}>
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                  Quiz Question Paper
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Quiz_Paper"
+                      onChange={(e) => handleFileUpload(e, "Quiz_Paper")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Quiz_Paper && (
+                    <img
+                      src={CourseForm.Quiz_Paper}
+                      alt="Quiz Paper"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Best Solved Quiz
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Best_Solved_Quiz"
+                      onChange={(e) => handleFileUpload(e, "Best_Solved_Quiz")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Best_Solved_Quiz && (
+                    <img
+                      src={CourseForm.Best_Solved_Quiz}
+                      alt="Best Solved Quiz"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Avg Solved Quiz
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Avg_Solved_Quiz"
+                      onChange={(e) => handleFileUpload(e, "Avg_Solved_Quiz")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Avg_Solved_Quiz && (
+                    <img
+                      src={CourseForm.Avg_Solved_Quiz}
+                      alt="Attendance Record"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            </Stack>
+
+            {/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+<Stack direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4}>
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Worst Solved Quiz
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Worst_Solved_Quiz"
+                      onChange={(e) => handleFileUpload(e, "Worst_Solved_Quiz")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Worst_Solved_Quiz && (
+                    <img
+                      src={CourseForm.Worst_Solved_Quiz}
+                      alt="Worst_Solved_Quiz"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Mid Term
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="MidTerm"
+                      onChange={(e) => handleFileUpload(e, "MidTerm")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.MidTerm && (
+                    <img
+                      src={CourseForm.MidTerm}
+                      alt="MidTerm"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Best Mid
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Best_Mid"
+                      onChange={(e) => handleFileUpload(e, "Best_Mid")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Best_Mid && (
+                    <img
+                      src={CourseForm.Best_Mid}
+                      alt="Best_Mid"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            </Stack>
+
+            {/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+<Stack direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4}>
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Avg Mid
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Avg_Mid"
+                      onChange={(e) => handleFileUpload(e, "Avg_Mid")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Avg_Mid && (
+                    <img
+                      src={CourseForm.Avg_Mid}
+                      alt="Quiz Paper"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Worst Mid
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Worst_Mid"
+                      onChange={(e) => handleFileUpload(e, "Worst_Mid")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Worst_Mid && (
+                    <img
+                      src={CourseForm.Worst_Mid}
+                      alt="Worst_Mid"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Final Paper
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Final_Paper"
+                      onChange={(e) => handleFileUpload(e, "Final_Paper")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Final_Paper && (
+                    <img
+                      src={CourseForm.Final_Paper}
+                      alt="Final_Paper"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            </Stack>
+
+            {/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+<Stack direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4}>
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Best Final
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Best_Final"
+                      onChange={(e) => handleFileUpload(e, "Best_Final")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Best_Final && (
+                    <img
+                      src={CourseForm.Best_Final}
+                      alt="Best_Final"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Avg Final
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Avg_Final"
+                      onChange={(e) => handleFileUpload(e, "Avg_Final")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Avg_Final && (
+                    <img
+                      src={CourseForm.Avg_Final}
+                      alt="Avg_Final"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Worst Final
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Worst_Final"
+                      onChange={(e) => handleFileUpload(e, "Worst_Final")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Worst_Final && (
+                    <img
+                      src={CourseForm.Worst_Final}
+                      alt="Best Mid"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            </Stack>
+           
+                      {/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+<Stack direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4}>
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Course Result
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Course_Result"
+                      onChange={(e) => handleFileUpload(e, "Course_Result")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.Course_Result && (
+                    <img
+                      src={CourseForm.Course_Result}
+                      alt="Course_Result"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                CLO Assesment
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="CLO_Assesment"
+                      onChange={(e) => handleFileUpload(e, "CLO_Assesment")}
+                      accept="image/*"
+                      type="file"
+                    />
+                  </Button>
+                  {CourseForm.CLO_Assesment && (
+                    <img
+                      src={CourseForm.CLO_Assesment}
+                      alt="CLO_Assesment"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                </Stack>
+              </Stack> 
+            </Stack>
+                                 {/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------------------------------------- */}
+<Stack direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={4}>
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Project Report
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="Project_Report"
+                      onChange={(e) => handleFileUpload(e, "Project_Report")}
+                      accept=".doc,.docx,.pdf"
+                      type="file"
+                    />
+                  </Button>
+                  {projectReportFileName && <Typography>{projectReportFileName}</Typography>}
+
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={4}>
+
+
+                <Typography sx={{ color: "black" }} variant="h5">
+                Course Review Report
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={4}
+                >
+                  <Button variant="contained" component="label">
+                    Upload
+                    <input
+                      hidden
+                      name="ReviewReport"
+                      onChange={(e) => handleFileUpload(e, "ReviewReport")}
+                      accept=".doc,.docx,.pdf"
+                      type="file"
+                    />
+                  </Button>
+                  {reviewReportFileName && <Typography>{reviewReportFileName}</Typography>}
+
+                </Stack>
+              </Stack> 
+            </Stack>
+           
+            {/* 
               </Stack>
 
 */}
 
 
 
-              {/* For Assingment Tasks  */}
+            {/* For Assingment Tasks  */}
 
-             {/** yha se neche */}
+            {/** yha se neche */}
 
             {/*  Project Report */}
-        
+
 
             {isLoading ? (
               <CircularProgress />

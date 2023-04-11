@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const CourseSchema = mongoose.Schema({
 
-    Course_Instructor:{
+    Course_Instructor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref: 'User'
     },
     courseTitle: {
         type: String,
@@ -54,11 +54,11 @@ const CourseSchema = mongoose.Schema({
         type: Date,
         required: true,
         validate: {
-  validator: function(v) {
-    return /^\w{3}\s\w{3}\s\d{2}\s\d{4}\s\d{2}:\d{2}:\d{2}\sGMT[\+\-]\d{4}\s\([\w\s]+\)$/.test(v);
-  },
-  message: props => `${props.value} is not a valid date format (ddd MMM DD YYYY HH:mm:ss GMT+XXXX (Timezone Name))`
-}
+            validator: function (v) {
+                return /^\w{3}\s\w{3}\s\d{2}\s\d{4}\s\d{2}:\d{2}:\d{2}\sGMT[\+\-]\d{4}\s\([\w\s]+\)$/.test(v);
+            },
+            message: props => `${props.value} is not a valid date format (ddd MMM DD YYYY HH:mm:ss GMT+XXXX (Timezone Name))`
+        }
 
     },
     Duration: {
@@ -67,29 +67,137 @@ const CourseSchema = mongoose.Schema({
 
     },
     Topics_Covered: {
-        type:String,
-                required: true,
+        type: String,
+        required: true,
 
-     },
-    //attendance_record: {
-        
-        //attendance_url:{
-        //    type:String,
-//required:true
-     //   }      
-  //  },
-    
-  // yha att ae ga
-
-  // yha tk
-    ref_of_lectureNotes: {
-       
-            type:String,
-         required:true
     },
+    attendance_record: {
+        type: String,
+        required: true
+    },
+
+    ref_of_lectureNotes: {
+        type: String,
+        required: true
+    },
+    assignmentTask: {
+            type: String,
+            required:true
+    },
+    Best_Solved_Assignment: {
+            type: String,
+            required:true
+        
+    },
+    Avg_Solved_Assignment: {
+       
+            type: String,
+            required:true
+       
+    },
+    Worst_Solved_Assignment: {
+      
+            type: String,
+            required:true
+    
+    },
+    Quiz_Paper: {
+     
+            type: String,
+            required:true
+        
+    },
+    Best_Solved_Quiz: {
+      
+            type: String,
+            required:true
+        
+    },
+    Avg_Solved_Quiz: {
+     
+            type: String,
+            required:true
+    
+    },
+    Worst_Solved_Quiz: {
+        
+            type: String,
+            required:true
+        
+    },
+    MidTerm: {
+        
+            type: String,
+            required:true
+        
+    },
+    Best_Mid: {
+     
+            type: String,
+            required:true
+        
+    },
+    Avg_Mid: {
+       
+            type: String,
+            required:true
+        
+    },
+    Worst_Mid: {
+     
+            type: String,
+            required:true
+        
+    },
+    Final_Paper: {
+     
+            type: String,
+            required:true
+        
+    },
+    Best_Final: {
+       
+            type: String,
+            required:true
+        
+    },
+    Avg_Final: {
+        
+            type: String,
+            required:true
+        
+    },
+    Worst_Final: {
+       
+            type: String,
+            required:true
+        
+    },
+    Project_Report: {
+      
+            type: String,
+            required:true
+
+        
+        },
+    Course_Result: {
+      
+            type: String,
+            required:true
+        
+    },
+ CLO_Assesment: {
    
-    // yha se neche add krna
- 
+            type: String,
+            required:true
+        
+    },
+    ReviewReport: {
+   
+        type: String,
+        required:true
+    
+},
 });
 
 module.exports = mongoose.model("Course", CourseSchema);
