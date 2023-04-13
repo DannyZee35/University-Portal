@@ -72,130 +72,168 @@ const CourseSchema = mongoose.Schema({
 
     },
     attendance_record: {
-        type: String,
-        required: true
+        
+        url:{
+            type:String,
+            required:true
+        }      
     },
-
+// model yha se
     ref_of_lectureNotes: {
-        type: String,
-        required: true
+        url:{
+            type:String,
+            required:true
+        } 
     },
     assignmentTask: {
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
     },
     Best_Solved_Assignment: {
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Avg_Solved_Assignment: {
        
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
        
     },
     Worst_Solved_Assignment: {
       
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
     
     },
     Quiz_Paper: {
      
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Best_Solved_Quiz: {
-      
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Avg_Solved_Quiz: {
      
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
     
     },
     Worst_Solved_Quiz: {
-        
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     MidTerm: {
         
-            type: String,
+        url:{
+            type:String,
             required:true
-        
+        } 
     },
     Best_Mid: {
      
-            type: String,
+        url:{
+            type:String,
             required:true
-        
+        } 
     },
     Avg_Mid: {
        
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Worst_Mid: {
      
-            type: String,
+        url:{
+            type:String,
             required:true
-        
+        } 
     },
     Final_Paper: {
      
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Best_Final: {
        
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Avg_Final: {
         
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Worst_Final: {
        
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
         
     },
     Project_Report: {
       
-            type: String,
+        url:{
+            type:String,
             required:true
+        } 
 
         
         },
     Course_Result: {
       
-            type: String,
+        url:{
+            type:String,
             required:true
-        
+        } 
     },
  CLO_Assesment: {
    
-            type: String,
-            required:true
-        
+    url:{
+        type:String,
+        required:true
+    } 
     },
     ReviewReport: {
    
-        type: String,
-        required:true
+        url:{
+            type:String,
+            required:true
+        } 
     
 },
 });

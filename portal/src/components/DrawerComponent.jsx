@@ -18,6 +18,12 @@ export const DrawerComponent=()=>{
 
         },
         {
+          title: 'Courses',
+          to: '/courses',
+          visible: user?.UserRole === 'instructor'
+
+      },
+        {
             
             title: 'HOD',
             to: '/hod',

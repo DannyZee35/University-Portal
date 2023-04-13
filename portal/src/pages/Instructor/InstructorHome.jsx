@@ -1,6 +1,7 @@
 import { Container, Typography } from "@mui/material"
  
 import { CreateCourse } from "./CreateCourse";
+import { Courses } from "./Courses";
 
 
 const drawerWidth=300;
@@ -15,7 +16,7 @@ export const InstructorHome=()=>{
     useEffect(()=>{
         if(!user){
             navigate('/login')
-        }
+        } <Courses/>
     },[user,navigate])* 
      */
     return(
@@ -28,6 +29,7 @@ export const InstructorHome=()=>{
   
 
         <CreateCourse/>
+        <Courses/>
         </Container>
         </>
     )
