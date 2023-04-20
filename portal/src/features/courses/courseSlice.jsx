@@ -1,95 +1,169 @@
-import {createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import courseService from "./courseService"
- 
 
-const initialState={
 
-    courses:[],
-    isError:false,
-    isSuccess:false,
-    isLoading:false,
-    message:''
+const initialState = {
+
+  courses: [],
+  singleCourse: {},
+  isError: false,
+  isSuccess: false,
+  isLoading: false,
+  message: ''
 }
 
 
 // creating new course
 
 export const create_Course = createAsyncThunk(
-    "courses/create",
-    async (courseData, thunkAPI) => {
-      try {
-        const token = thunkAPI.getState().auth.user.token;
-         return await courseService.create_Course(courseData, token
-        );
-    
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        return thunkAPI.rejectWithValue(message);
-      }
+  "courses/create",
+  async (courseData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await courseService.create_Course(courseData, token
+      );
+
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
-  );
-  
-  // get courses
-  export const getCourses = createAsyncThunk(
-    "courses/getAll",
-    async (_, thunkAPI) => {
-      try {
-        const token = thunkAPI.getState().auth.user.token;
-         return await courseService.getCourses(token);
-    
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        return thunkAPI.rejectWithValue(message);
-      }
+  }
+);
+
+// get courses
+export const getCourses = createAsyncThunk(
+  "courses/getAll",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await courseService.getCourses(token);
+
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
-  );
+  }
+);
+
+export const getSingleCourse = createAsyncThunk(
+  'courses/getOne',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await courseService.getSingleCourse(id, token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const updateCourse = createAsyncThunk(
+  "courses/update",
+  async ({ id, updatedCourseData }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await courseService.updateCourse(id,updatedCourseData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+ 
 
 export const courseSlice = createSlice({
-    name:'course',
-    initialState,
-    reducers:{
-        reset:(state)=>initialState,
-    },
-    extraReducers:(builder)=>{
-        builder
-        .addCase(create_Course.pending, (state)=>{
-            state.isLoading=true
-        })
-        .addCase(create_Course.fulfilled, (state,action)=>{
-            state.isLoading=false
-            state.isSuccess=true
-            state.courses.push(action.payload)
-         })
-         .addCase(create_Course.rejected, (state,action)=>{
-            state.isLoading=false
-            state.isError=true
-            state.message=action.payload
-         })
-         .addCase(getCourses.pending, (state)=>{
-          state.isLoading=true
+  name: 'course',
+  initialState,
+  reducers: {
+    reset: (state) => initialState,
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(create_Course.pending, (state) => {
+        state.isLoading = true
       })
-      .addCase(getCourses.fulfilled, (state,action)=>{
-          state.isLoading=false
-          state.isSuccess=true
-          state.courses= action.payload
-       })
-       .addCase(getCourses.rejected, (state,action)=>{
-          state.isLoading=false
-          state.isError=true
-          state.message=action.payload
-       })
-    }
+      .addCase(create_Course.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.courses.push(action.payload)
+      })
+      .addCase(create_Course.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getCourses.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getCourses.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.courses = action.payload
+      })
+      .addCase(getCourses.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getSingleCourse.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getSingleCourse.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.singleCourse = action.payload
+      })
+      .addCase(getSingleCourse.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(updateCourse.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCourse.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        // find the index of the updated course in the courses array
+        const index = state.courses.findIndex(
+          (course) => course._id === action.payload._id
+        );
+        // update the course object at the corresponding index in the array
+        state.courses[index] = action.payload;
+        // update the singleCourse object if the updated course is the same as the single course being displayed
+        if (state.singleCourse._id === action.payload._id) {
+          state.singleCourse = action.payload;
+        }
+      })
+      .addCase(updateCourse.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+    
+  }
 })
 
-export const {reset} = courseSlice.actions
+export const { reset } = courseSlice.actions
 export default courseSlice.reducer

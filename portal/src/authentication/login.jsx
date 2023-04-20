@@ -11,6 +11,8 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import custLogo from "../assets/cust.png"
+
 import { alpha, styled } from "@mui/material/styles";
 
 const drawerWidth = 300;
@@ -98,9 +100,9 @@ export const Login = () => {
       <Box
         component="form"
         sx={{
-          p: 10,
+          p: 5,
           mx: 35,
-          mt: 15,
+          mt: 5,
           backgroundColor: "#fff",
           borderRadius: "10px",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
@@ -110,8 +112,9 @@ export const Login = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          spacing={4}
+          spacing={3}
         >
+          <img src={custLogo} height={200} width={200}/>
           <Typography variant="h3" color={"primary"}>
             University Portal
           </Typography>

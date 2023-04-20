@@ -1,25 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { authMiddleware } = require('../middleware/auth');
-const multer = require('multer');
 
 const CreateCourseController = require('../controller/CreateCourseController');
 const CoursesController = require('../controller/CoursesController');
+const feedbackController = require('../controller/feedbackController');
 
 
 const allowedInstructorRoles = ['instructor'];
+const allowedhodRoles = ['coordinator',];
+const allowedRoles = ['coordinator', 'instructor','hod'];
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads");
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.originalname);
-    },
-  });
-  
-  const upload = multer({ storage: storage });
 router.post('/create-course', authMiddleware(allowedInstructorRoles), CreateCourseController.createCourse);
-router.get('/courses', authMiddleware(allowedInstructorRoles), CoursesController.getAllCoursesByUser);
-
+router.get('/courses', authMiddleware(allowedRoles), CoursesController.getAllCoursesByUser);
+router.get('/courses/:id', authMiddleware(allowedRoles), CoursesController.getSingleCourse);
+router.put('/feedback/:id', authMiddleware(allowedhodRoles), CoursesController.updateCourse);
+ 
 module.exports = router;

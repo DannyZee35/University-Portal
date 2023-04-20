@@ -4,7 +4,8 @@ const CourseSchema = mongoose.Schema({
 
     Course_Instructor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     courseTitle: {
         type: String,
@@ -69,6 +70,21 @@ const CourseSchema = mongoose.Schema({
     Topics_Covered: {
         type: String,
         required: true,
+
+    },
+    status: {
+        type: String,
+        required: true,
+        default:'Un Approved'
+    },
+    feedback:{
+        type: String,
+      
+      
+    },
+    coordinator:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
 
     },
     attendance_record: {

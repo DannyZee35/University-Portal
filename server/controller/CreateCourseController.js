@@ -6,7 +6,7 @@ const fs = require("fs");
 
 
 
-const createCourse = async (req, res) => {
+const createCourse = async (req, res,next) => {
   const {
     courseTitle,
     courseCode,
@@ -22,6 +22,8 @@ const createCourse = async (req, res) => {
     Date,
     Duration,
     Topics_Covered,
+    status,
+   
     attendance_record,
     //controller body yha se
 
@@ -30,7 +32,7 @@ const createCourse = async (req, res) => {
   } = req.body;
   try {
 
-
+     
 
     // Get path of the uploaded attendance record file
 
@@ -81,16 +83,16 @@ const createCourse = async (req, res) => {
     const best_final_result = await cloudinary.uploader.upload(bestFinal.tempFilePath, { folder: "Best Final" },)
     const avg_final_result = await cloudinary.uploader.upload(avgFinal.tempFilePath, { folder: "Avg Final" },)
     const worst_final_result = await cloudinary.uploader.upload(worstFinal.tempFilePath, { folder: "Worst Final" },)
-    const project_result = await cloudinary.uploader.upload(project.tempFilePath, { folder: "Project Report",    resource_type: 'auto'},)
+    const project_result = await cloudinary.uploader.upload(project.tempFilePath, {  public_id: project.name, 
+      folder: "Project Report",    resource_type: 'auto'},)
     const course_result = await cloudinary.uploader.upload(courseResult.tempFilePath, { folder: "Course Result" },)
     const clo_result = await cloudinary.uploader.upload(clo.tempFilePath, { folder: "CLO Assesment" },)
-    const review_result = await cloudinary.uploader.upload(review.tempFilePath, { folder: "Review Report",    resource_type: 'auto'  },)
+    const review_result = await cloudinary.uploader.upload(review.tempFilePath, { folder: "Review Report",   resource_type: 'auto'  },)
 
 
     const InstructorId = req.user._id;
 
-
-    console.log(req.file);
+ 
 
     const course = await new Course({
       Course_Instructor: InstructorId,
@@ -108,6 +110,9 @@ const createCourse = async (req, res) => {
       Date,
       Duration,
       Topics_Covered,
+      status,
+  
+    
       attendance_record: {
         url: result.url, 
       },

@@ -1,10 +1,6 @@
- 
 import  { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-
-
 
 export const withAuth = (Component, allowedRoles) => {
   const AuthWrapper = (props) => {
@@ -14,9 +10,14 @@ export const withAuth = (Component, allowedRoles) => {
     useEffect(() => {
       if (!user) {
         navigate("/login");
-      } else if (!allowedRoles.includes(user.UserRole)) {
-        console.log(user.UserRole)
-        navigate("/hod");
+      } 
+    else if (user.UserRole === "instructor" && !allowedRoles.includes("instructor")) {
+      navigate("/");
+    } 
+      else if (user.UserRole === "coordinator" && !allowedRoles.includes("coordinator")) {
+        navigate("/dashboard");
+      } else if (user.UserRole === "hod" && !allowedRoles.includes("hod")) {
+        navigate("/hod-dashboard");
       }
     }, [user, allowedRoles, navigate]);
 

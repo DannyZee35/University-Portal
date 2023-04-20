@@ -143,7 +143,7 @@ export const CreateCourse = () => {
 
     await dispatch(create_Course(dataCourses));
 
-    SetCourseForm({
+    {/*SetCourseForm({
       courseTitle: "",
       courseCode: "",
       Section_no: "",
@@ -180,7 +180,7 @@ export const CreateCourse = () => {
       Course_Result: "",
       CLO_Assesment: "",
       ReviewReport: ""
-    })
+    })*/}
   }
 
   const handleSubmit = async (e) => {
