@@ -9,10 +9,13 @@ export const withAuth = (Component, allowedRoles) => {
 
     useEffect(() => {
       if (!user) {
-        navigate("/login");
+        navigate("/login") 
       } 
-    else if (user.UserRole === "instructor" && !allowedRoles.includes("instructor")) {
+    else if (user.UserRole === "" && !allowedRoles.includes("")) {
       navigate("/");
+    } 
+    else if (user.UserRole === "instructor" && !allowedRoles.includes("instructor")) {
+      navigate("/InstDashboard");
     } 
       else if (user.UserRole === "coordinator" && !allowedRoles.includes("coordinator")) {
         navigate("/dashboard");

@@ -24,6 +24,11 @@ import { InstructorApproved } from "./pages/Instructor/InstructorApproved";
 import { InstructorRejected } from "./pages/Instructor/InstructorRejected";
 import { HodDashboard } from "./pages/HOD/HodDashboard";
 import { HodDetailsCourse } from "./pages/HOD/HodDetailsCourse";
+import {StartPage} from "./StartPage"
+import { InsLogin } from "./authentication/InsLogin";
+import { CoLogin } from "./authentication/CoLogin";
+import { HodLogin } from "./authentication/HodLogin";
+import { SignUp } from "./authentication/SignUp";
 
 const drawerWidth = 300;
 
@@ -45,7 +50,10 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
-        <Route index element={<InstructorRoutes />} />
+        <Route index element={<StartPage />} />
+        <Route path="/InstDashboard" element={<InstructorRoutes />} />
+
+   
         <Route path="/courses" element={<CoursesRoute />} />
         <Route path="/courses/:id" element={<SingleCourse />} />
         <Route path="/ApprovedCourseDetails/:id" element={<ApprovedDetailsCoordinator />} />
@@ -62,6 +70,13 @@ function App() {
         <Route path="/rejected" element={<CoordinatorRejectedCourses />} />
  
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        <Route path="/Inslogin" element={<InsLogin />} />
+        
+        <Route path="/CoLogin" element={<CoLogin />} />
+        <Route path="/hodLogin" element={<HodLogin />} />
+
       </Route>
     )
   );

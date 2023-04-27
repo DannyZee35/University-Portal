@@ -570,8 +570,7 @@ import {
                                             gutterBottom
                                         >
                                             {singleCourse.feedback}
-                                        </Typography>
-                                        
+                                        </Typography>                                      
                                         <Button
                                                 onClick={() => {
                                                     setIsEditing(true);
@@ -582,7 +581,6 @@ import {
                                             variant="contained" color="primary" size="large" sx={{ textTransform: 'none' }}>
                                             Edit
                                         </Button>
-
                                     </>
                                 )}
                       

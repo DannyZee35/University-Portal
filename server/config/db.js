@@ -7,7 +7,7 @@ const connectDB = async () => {
       const conn = await mongoose.connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        bufferCommands: false, // set bufferCommands to false to disable the MongoDB driver buffering
+        bufferCommands: true, // set bufferCommands to false to disable the MongoDB driver buffering
       });
   
       console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);

@@ -11,6 +11,8 @@ router.get('/', authMiddleware(allowedInstructorRoles), authController.home);
 router.get('/hod', authMiddleware(allowedHodRoles), authController.hod);
 router.get('/cc', authMiddleware(allowedCoordinatorRoles), authController.cc);
 
+router.post('/signup',authController.registerUser);
+
 router.post('/login',authController.login);
 
 module.exports=router;

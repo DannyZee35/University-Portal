@@ -31,7 +31,7 @@ export const Login = () => {
     }
 
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/InstDashboard");
     }
 
     dispatch(reset());
@@ -145,6 +145,13 @@ export const Login = () => {
           >
             Login
           </Button>
+          <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          <Typography>Dont Have An Account?</Typography>
+          <Button sx={{textTransform:'none'}} size="large" onClick={(e)=>navigate('/signup')}> 
+            Sign Up
+          </Button>
+          </Stack>
+          
         </Stack>
       </Box>
     </Container>

@@ -32,7 +32,7 @@ export const DrawerComponent = () => {
   const DrawerList = [
     {
       title: "Dashboard",
-      to: "/",
+      to: "/InstDashboard",
       visible: user?.UserRole === "instructor",
       icon:  <DashboardRoundedIcon/>
     },
