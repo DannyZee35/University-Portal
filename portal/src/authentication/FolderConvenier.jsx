@@ -1,4 +1,5 @@
 
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -10,13 +11,13 @@ import {
   TextField,
   Stack,
   Button,
-  Alert,
   FormControl,
   OutlinedInput,
   InputLabel,
   InputAdornment,
   IconButton,
   Typography,
+  Alert
 } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -28,16 +29,19 @@ const drawerWidth = 300;
 
 
 
-export const InsLogin=()=>{
+
+export const FolderConvenier=()=>{
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const { user, isLoading, isError, isSuccess, message } = useSelector(
       (state) => state.auth
     );
     const [showPassword, setShowPassword] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
@@ -51,8 +55,8 @@ export const InsLogin=()=>{
       }
   
       if (isSuccess || user) {
-        navigate("/InstDashboard");
-          }
+        navigate("/dashboard");
+      }
   
       dispatch(reset());
     });
@@ -80,12 +84,12 @@ export const InsLogin=()=>{
         // redirect user based on role
         const role = response.data.user.role;
         switch (role) {
-          case "course instructor":
+          case "instructor":
             break;
-          case "course coordinator":
+          case "coordinator":
             // redirect to coordinator page
             break;
-          case "head of department":
+          case "hod":
             // redirect to hod page
             break;
           default:
@@ -141,7 +145,7 @@ export const InsLogin=()=>{
         >
           <img src={custLogo} height={200} width={200}/>
           <Typography variant="h3" color={"primary"}>
-            Course Instructor
+          Course Folder Coordinator
           </Typography>
           <TextField
             label="Username"
@@ -151,7 +155,6 @@ export const InsLogin=()=>{
             variant="outlined"
             onChange={(e) => setUsername(e.target.value)}
           />
-        
           <FormControl sx={{ m: 1,  }} variant="outlined" fullWidth>
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
@@ -186,22 +189,24 @@ export const InsLogin=()=>{
           >
             Login
           </Button>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
+        </Stack>
+
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <Typography>Dont Have An Account?</Typography>
           <Button sx={{textTransform:'none'}} size="large" onClick={(e)=>navigate('/signup')}> 
             Sign Up
           </Button>
-          </Stack>
+
           {errorMessage && (
    <Alert severity="error"> {errorMessage}</Alert>
 
    
  
 )}
-        </Stack>
-  
+          </Stack>
       </Box>
     </Container>
+        
         </>
     )
 }

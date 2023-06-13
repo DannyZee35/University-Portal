@@ -33,52 +33,72 @@ export const DrawerComponent = () => {
     {
       title: "Dashboard",
       to: "/InstDashboard",
-      visible: user?.UserRole === "instructor",
+      visible: user?.UserRole === "course instructor",
       icon:  <DashboardRoundedIcon/>
     },
     {
       title: "Courses",
       to: "/courses",
-      visible: user?.UserRole === "instructor",
+      visible: user?.UserRole === "course instructor",
       icon:  <MenuBookRoundedIcon/>
     },
     {
       title: "Approved Courses",
       to: "/instructorApproved",
-      visible: user?.UserRole === "instructor",
+      visible: user?.UserRole === "course instructor",
       icon:  <TaskAltRoundedIcon/>
     },
     {
       title: "UnApproved Courses",
       to: "/instructorUnApproved",
-      visible: user?.UserRole === "instructor",
+      visible: user?.UserRole === "course instructor",
       icon:  <CancelRoundedIcon/>
     },
     {
       title: "Dashboard",
       to: "/dashboard",
-      visible: user?.UserRole === "coordinator",
+      visible: user?.UserRole === "course coordinator",
       icon:  <DashboardRoundedIcon/>
     },
 
     {
       title: "Approved Courses",
       to: "/approved",
-      visible: user?.UserRole === "coordinator",
+      visible: user?.UserRole === "course coordinator",
       icon:  <TaskAltRoundedIcon/>
     },
     {
       title: "Rejected Courses",
       to: "/rejected",
-      visible: user?.UserRole === "coordinator",
+      visible: user?.UserRole === "course coordinator",
       icon:  <CancelRoundedIcon/>
     },
 
     {
       title: "Dashboard",
       to: "/hod-dashboard",
-      visible: user?.UserRole === "hod",
+      visible: user?.UserRole === "head of department",
       icon:  <DashboardRoundedIcon/>
+    },
+
+    {
+      title: "Rejected Courses",
+      to: "/HodRejected",
+      visible: user?.UserRole === "head of department",
+      icon:  <CancelRoundedIcon/>
+    },
+
+    {
+      title: "Dashboard",
+      to: "/folder-dashboard",
+      visible: user?.UserRole === "course folder coordinator",
+      icon:  <DashboardRoundedIcon/>
+    },
+    {
+      title: "Rejected Courses",
+      to: "/folder-rejected",
+      visible: user?.UserRole === "course folder coordinator",
+      icon:  <CancelRoundedIcon/>
     },
   ];
   const filteredDrawerList = DrawerList.filter(

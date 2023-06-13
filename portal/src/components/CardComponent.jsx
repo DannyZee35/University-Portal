@@ -5,7 +5,7 @@ export const CardComponent=({title,image,onClick})=>{
 
     return(
         <>
-        <Card sx={{ width: 300 }} elevation={5}>
+        <Card sx={{width: 320 }} elevation={5}>
       <CardActionArea onClick={onClick}>
         <CardMedia
           component="img"

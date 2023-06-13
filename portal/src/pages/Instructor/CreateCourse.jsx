@@ -517,18 +517,11 @@ export const CreateCourse = () => {
                       hidden
                       name="assignmentTask"
                       onChange={handleChange}
-                      accept="image/*"
+                      accept=".doc,.docx,.pdf"
                       type="file"
                     />
                   </Button>
-                  {CourseForm.assignmentTask && (
-                    <img
-                      src={URL.createObjectURL(CourseForm.assignmentTask)}
-                      alt="Assignment Task"
-                      height={200}
-                      width={200}
-                    />
-                  )}
+                  {CourseForm.assignmentTask  && <Typography>{CourseForm.assignmentTask.name}</Typography>}
                 </Stack>
               </Stack>
             </Stack>
@@ -686,18 +679,11 @@ export const CreateCourse = () => {
                       hidden
                       name="Quiz_Paper"
                       onChange={handleChange}
-                      accept="image/*"
+                      accept=".doc,.docx,.pdf"
                       type="file"
                     />
                   </Button>
-                  {CourseForm.Quiz_Paper && (
-                    <img
-                      src={URL.createObjectURL(CourseForm.Quiz_Paper)}
-                      alt="Quiz Paper"
-                      height={200}
-                      width={200}
-                    />
-                  )}
+                  {CourseForm.Quiz_Paper  && <Typography>{CourseForm.Quiz_Paper.name}</Typography>}
                 </Stack>
               </Stack>
 
@@ -844,18 +830,11 @@ export const CreateCourse = () => {
                       hidden
                       name="MidTerm"
                       onChange={handleChange}
-                      accept="image/*"
+                      accept=".doc,.docx,.pdf"
                       type="file"
                     />
                   </Button>
-                  {CourseForm.MidTerm && (
-                    <img
-                      src={URL.createObjectURL(CourseForm.MidTerm)}
-                      alt="MidTerm"
-                      height={200}
-                      width={200}
-                    />
-                  )}
+                  {CourseForm.MidTerm  && <Typography>{CourseForm.MidTerm.name}</Typography>}
                 </Stack>
               </Stack>
 
@@ -1002,18 +981,11 @@ export const CreateCourse = () => {
                       hidden
                       name="Final_Paper"
                       onChange={handleChange}
-                      accept="image/*"
+                      accept=".doc,.docx,.pdf"
                       type="file"
                     />
                   </Button>
-                  {CourseForm.Final_Paper && (
-                    <img
-                      src={URL.createObjectURL(CourseForm.Final_Paper)}
-                      alt="Final_Paper"
-                      height={200}
-                      width={200}
-                    />
-                  )}
+                  {CourseForm.Final_Paper  && <Typography>{CourseForm.Final_Paper.name}</Typography>}
                 </Stack>
               </Stack>
             </Stack>

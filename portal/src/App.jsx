@@ -29,24 +29,34 @@ import { InsLogin } from "./authentication/InsLogin";
 import { CoLogin } from "./authentication/CoLogin";
 import { HodLogin } from "./authentication/HodLogin";
 import { SignUp } from "./authentication/SignUp";
+import { FolderConvenier } from "./authentication/FolderConvenier";
+import { HodRejected } from "./pages/HOD/HodRejected";
+import { FolderDashboard } from "./pages/Course Convinier/FolderDashboard";
+import { FolderDetails } from "./pages/Course Convinier/FolderDetails";
+import { FolderRejectedDetails } from "./pages/Course Convinier/FolderRejectedDetails";
 
 const drawerWidth = 300;
 
 function App() {
-  const ProtectedCoordinator = withAuth(Coordinator, ["coordinator"]);
-  const InstructorRoutes = withAuth(InstructorHome, ["instructor"]);
-  const CoursesRoute = withAuth(Courses, ["instructor"]);
-  const SingleCourse = withAuth(CourseDetails, ["instructor"]);
-  const CoordinatordApprovedCourses = withAuth(ApprovedCourses, ["coordinator"]);
-  const CoordinatorRejectedCourses = withAuth(RejectedCourses, ["coordinator"]);
-  const DetailsCourseCoordinator = withAuth(CoSingleCourse, ["coordinator"]);
-  const ApprovedDetailsCoordinator= withAuth(ApprovedDetails, ["coordinator"]);
-  const RejectDetailsCoordinator= withAuth(RejectDetails, ["coordinator"]);
-  const InstructorApprovedCourses= withAuth(InstructorApproved, ["instructor"]);
-  const InstructorUnApprovedCourses= withAuth(InstructorRejected, ["instructor"]);
-  const ProtectedHodDashboard= withAuth(HodDashboard, ["hod"]);
-  const ProtectedHodCourseDetails= withAuth(HodDetailsCourse, ["hod"]);
+  const ProtectedCoordinator = withAuth(Coordinator, ["course coordinator"]);
+  const InstructorRoutes = withAuth(InstructorHome, ["course instructor"]);
+  const CoursesRoute = withAuth(Courses, ["course instructor"]);
+  const SingleCourse = withAuth(CourseDetails, ["course instructor"]);
+  const CoordinatordApprovedCourses = withAuth(ApprovedCourses, ["course coordinator"]);
+  const CoordinatorRejectedCourses = withAuth(RejectedCourses, ["course coordinator"]);
+  const DetailsCourseCoordinator = withAuth(CoSingleCourse, ["course coordinator"]);
+  const ApprovedDetailsCoordinator= withAuth(ApprovedDetails, ["course coordinator"]);
+  const RejectDetailsCoordinator= withAuth(RejectDetails, ["course coordinator"]);
+  const InstructorApprovedCourses= withAuth(InstructorApproved, ["course instructor"]);
+  const InstructorUnApprovedCourses= withAuth(InstructorRejected, ["course instructor"]);
+  const ProtectedHodDashboard= withAuth(HodDashboard, ["head of department"]);
+  const ProtectedHodCourseDetails= withAuth(HodDetailsCourse, ["head of department"]);
+  const ProtectedHodRejected= withAuth(HodRejected, ["head of department"]);
+  const ProtectedFolder= withAuth(FolderDashboard, ["course folder coordinator"]);
+  const ProtectedFolderDetails= withAuth(FolderDetails, ["course folder coordinator"]);
+  const ProtectedFolderRejected= withAuth(FolderDetails, ["course folder coordinator"]);
 
+ 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
@@ -69,6 +79,13 @@ function App() {
         <Route path="/approved" element={<CoordinatordApprovedCourses />} />
         <Route path="/rejected" element={<CoordinatorRejectedCourses />} />
  
+        <Route path="/HodRejected" element={<ProtectedHodRejected />} />
+
+        <Route path="/folder-dashboard" element={<ProtectedFolder />} />
+        <Route path="/folder-details/:id" element={<ProtectedFolderDetails />} />
+        <Route path="/folder-rejected" element={<FolderRejectedDetails />} />
+
+
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
 
@@ -76,6 +93,7 @@ function App() {
         
         <Route path="/CoLogin" element={<CoLogin />} />
         <Route path="/hodLogin" element={<HodLogin />} />
+        <Route path="/folderCoordinator" element={<FolderConvenier />} />
 
       </Route>
     )

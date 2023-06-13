@@ -16,7 +16,7 @@ import {
   import { useDispatch, useSelector } from "react-redux";
   import { useParams } from "react-router-dom";
   import { getSingleCourse } from "../../features/courses/courseSlice";
-  
+  import custLogo from "../../assets/cust.png"
   const drawerWidth = 300;
   
 
@@ -35,7 +35,7 @@ export const HodDetailsCourse=()=>{
     }
     return(
         <>
-             <Container
+               <Container
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
@@ -50,70 +50,56 @@ export const HodDetailsCourse=()=>{
           
         
         <Box>
-          <Stack direction={"row"} alignItems={"flex-start"} justifyContent={"space-between"}>
-            <Typography variant="h5" sx={{ fontWeight: "bold", mb: 10 }} gutterBottom>
-              Course
-            </Typography>
-
-            <Typography
-              gutterBottom
-              variant="h6"
-              sx={{
-                fontWeight: "bold", mb: 10, mx: 25
-
-              }}
-            >
-              <strong>Status: </strong>
-              {singleCourse.status === "Approved" ?
-                (<span style={{ backgroundColor: "#99ee99", color: '#fff', padding: '5px 6px', borderRadius: '5px' }}>{singleCourse.status} </span>)
-                :
-                (<span style={{ backgroundColor: "#df2c14", color: '#fff', padding: '5px 6px', borderRadius: '5px' }}>{singleCourse.status} </span>)
-              }
-
-            </Typography>
-
+          <Stack direction={"row"} alignItems={"flex-start"} justifyContent={"center"} sx={{mb:5}}>
+            <img src={custLogo} height={200} width={200}/>
+    
           </Stack>
+          <Typography variant="h4" textAlign={"center"} mt={2}>
+        Web Based Course Folders Management System
+        </Typography>
+          <hr/>
 
           <Stack
-            direction={"row"}
+            direction={"column"}
             alignItems={"flex-start"}
             justifyContent={"flex-start"}
-            spacing={5}
+            spacing={2}
+            sx={{mt:5}}
           >
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Course Title: </strong> {singleCourse.courseTitle}
+              <strong>Course Title:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  </strong> {singleCourse.courseTitle}
             </Typography>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Course Code: </strong> {singleCourse.courseCode}
+              <strong>Course Code:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.courseCode}
             </Typography>{" "}
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Section No: </strong> {singleCourse.Section_no}
+              <strong>Section No:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.Section_no}
             </Typography>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Instructor Name: </strong> {singleCourse.Instructor_name}
+              <strong>Instructor Name:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.Instructor_name}
             </Typography>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Semester No: </strong> {singleCourse.semester_no}
+              <strong>Semester No:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;     </strong> {singleCourse.semester_no}
             </Typography>
           </Stack>
           <Typography
@@ -191,7 +177,7 @@ export const HodDetailsCourse=()=>{
           </Typography>
 
           <TableContainer
-            sx={{ border: "2px solid blue", mt: 3, mb: 5 }}
+            sx={{ border: "2px solid black", mt: 3, mb: 5 }}
             component={Paper}
           >
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -238,7 +224,7 @@ export const HodDetailsCourse=()=>{
             {singleCourse.attendance_record && <img src={singleCourse.attendance_record.url} style={{ height: "100%", width: "100%" }} />}
           </Box>
 
-          <Box sx={{ mb: 10, mt: 3, height: '400px', width: '600px' }} >
+          <Box sx={{ mb: 5, mt:10 }} >
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px", }}
@@ -247,9 +233,9 @@ export const HodDetailsCourse=()=>{
               <strong>Assignment Question Paper</strong>
             </Typography>
 
+            {singleCourse.assignmentTask && <a href={singleCourse.assignmentTask.url} target="_blank">Assignment Question Paper</a>}
 
-            {singleCourse.assignmentTask && <img src={singleCourse.assignmentTask.url} style={{ height: "100%", width: "100%" }} />}
-          </Box>
+           </Box>
           <Stack
             direction={"row"}
             alignItems={"flex-start"}
@@ -292,7 +278,7 @@ export const HodDetailsCourse=()=>{
             </Box>
 
           </Stack>
-          <Box sx={{ mb: 10, mt: 15, height: '400px', width: '600px' }} >
+          <Box sx={{ mb: 5, mt:10 }} >
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px", }}
@@ -301,9 +287,9 @@ export const HodDetailsCourse=()=>{
               <strong>Quiz Question Paper</strong>
             </Typography>
 
+            {singleCourse.Quiz_Paper && <a href={singleCourse.Quiz_Paper.url} target="_blank">Quiz Question Paper</a>}
 
-            {singleCourse.Quiz_Paper && <img src={singleCourse.Quiz_Paper.url} style={{ height: "100%", width: "100%" }} />}
-          </Box>
+           </Box>
 
 
           <Stack
@@ -349,7 +335,7 @@ export const HodDetailsCourse=()=>{
 
           </Stack>
 
-          <Box sx={{ mb: 10, mt: 15, height: '400px', width: '600px' }} >
+          <Box sx={{ mb: 5, mt:10 }} >
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px", }}
@@ -358,9 +344,9 @@ export const HodDetailsCourse=()=>{
               <strong>Mid Question Paper</strong>
             </Typography>
 
+            {singleCourse.MidTerm && <a href={singleCourse.MidTerm.url} target="_blank">Mid Question Paper</a>}
 
-            {singleCourse.MidTerm && <img src={singleCourse.MidTerm.url} style={{ height: "100%", width: "100%" }} />}
-          </Box>
+           </Box>
 
 
           <Stack
@@ -406,7 +392,7 @@ export const HodDetailsCourse=()=>{
 
           </Stack>
 
-          <Box sx={{ mb: 10, mt: 15, height: '400px', width: '600px' }} >
+          <Box sx={{ mb: 5, mt:10 }}>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px", }}
@@ -415,9 +401,9 @@ export const HodDetailsCourse=()=>{
               <strong>Final Question Paper</strong>
             </Typography>
 
+            {singleCourse.Final_Paper && <a href={singleCourse.Final_Paper.url} target="_blank">Final Question Paper</a>}
 
-            {singleCourse.Final_Paper && <img src={singleCourse.Final_Paper.url} style={{ height: "100%", width: "100%" }} />}
-          </Box>
+           </Box>
 
 
           <Stack

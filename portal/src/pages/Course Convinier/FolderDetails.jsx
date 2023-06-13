@@ -1,41 +1,41 @@
 import {
-  Container,
-  CircularProgress,
-  Box,
-  Typography,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getSingleCourse } from "../../features/courses/courseSlice";
-import custLogo from "../../assets/cust.png"
+    Container,
+    CircularProgress,
+    Box,
+    Typography,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+  } from "@mui/material";
+  import { useEffect, useState } from "react";
+  import { useDispatch, useSelector } from "react-redux";
+  import { useParams } from "react-router-dom";
+  import { getSingleCourse } from "../../features/courses/courseSlice";
+  import custLogo from "../../assets/cust.png"
+  const drawerWidth = 300;
+  
 
-const drawerWidth = 300;
 
-export const CourseDetails = () => {
-  const { id } = useParams();
-  const dispatch = useDispatch();
-
-  const { singleCourse, isLoading } = useSelector((state) => state.course);
-  useEffect(() => {
-    dispatch(getSingleCourse(id))
-  }, [dispatch, id]);
-
-  if (isLoading) {
-    <CircularProgress />;
-  }
-
-  return (
-    <>
-          <Container
+export const FolderDetails=()=>{
+    const { id } = useParams();
+    const dispatch = useDispatch();
+  
+    const { singleCourse, isLoading } = useSelector((state) => state.course);
+    useEffect(() => {
+      dispatch(getSingleCourse(id))
+    }, [dispatch, id]);
+  
+    if (isLoading) {
+      <CircularProgress />;
+    }
+    return(
+        <>
+             <Container
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
@@ -278,7 +278,7 @@ export const CourseDetails = () => {
             </Box>
 
           </Stack>
-          <Box sx={{ mb: 5, mt:10 }}>
+          <Box sx={{ mb: 5, mt:10 }} >
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px", }}
@@ -335,7 +335,7 @@ export const CourseDetails = () => {
 
           </Stack>
 
-          <Box sx={{ mb: 5, mt:10 }}>
+          <Box sx={{ mb: 5, mt:10 }} >
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px", }}
@@ -392,7 +392,7 @@ export const CourseDetails = () => {
 
           </Stack>
 
-          <Box  sx={{ mb: 5, mt:10 }} >
+          <Box sx={{ mb: 5, mt:10 }}>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px", }}
@@ -545,6 +545,6 @@ export const CourseDetails = () => {
         </>
         )}
       </Container>
-    </>
-  );
-};
+        </>
+    )
+}

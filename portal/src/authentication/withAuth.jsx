@@ -14,13 +14,16 @@ export const withAuth = (Component, allowedRoles) => {
     else if (user.UserRole === "" && !allowedRoles.includes("")) {
       navigate("/");
     } 
-    else if (user.UserRole === "instructor" && !allowedRoles.includes("instructor")) {
+    else if (user.UserRole === "course instructor" && !allowedRoles.includes("course instructor")) {
       navigate("/InstDashboard");
     } 
-      else if (user.UserRole === "coordinator" && !allowedRoles.includes("coordinator")) {
+      else if (user.UserRole === "course coordinator" && !allowedRoles.includes("course coordinator")) {
         navigate("/dashboard");
-      } else if (user.UserRole === "hod" && !allowedRoles.includes("hod")) {
+      } else if (user.UserRole === "head of department" && !allowedRoles.includes("head of department")) {
         navigate("/hod-dashboard");
+      }
+       else if (user.UserRole === "course folder coordinator" && !allowedRoles.includes("course folder coordinator")) {
+        navigate("/folder-dashboard");
       }
     }, [user, allowedRoles, navigate]);
 

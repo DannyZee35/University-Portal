@@ -7,9 +7,9 @@ const CoursesController = require('../controller/CoursesController');
 const feedbackController = require('../controller/feedbackController');
 
 
-const allowedInstructorRoles = ['instructor'];
-const allowedhodRoles = ['coordinator',];
-const allowedRoles = ['coordinator', 'instructor','hod'];
+const allowedInstructorRoles = ['course instructor'];
+const allowedhodRoles = ['course coordinator',];
+const allowedRoles = ['course coordinator', 'course instructor','head of department','course folder coordinator'];
 
 router.post('/create-course', authMiddleware(allowedInstructorRoles), CreateCourseController.createCourse);
 router.get('/courses', authMiddleware(allowedRoles), CoursesController.getAllCoursesByUser);

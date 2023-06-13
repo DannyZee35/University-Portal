@@ -9,9 +9,18 @@ import {
   TextField,
   Stack,
   Button,
+  Alert,
+  FormControl,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  IconButton,
   Typography,
 } from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import custLogo from "../assets/cust.png"
+
 
 import { alpha, styled } from "@mui/material/styles";
 
@@ -24,7 +33,14 @@ export const Login = () => {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+  const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+  
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    }
   useEffect(() => {
     if (isError) {
       console.log(message);
@@ -60,12 +76,12 @@ export const Login = () => {
       // redirect user based on role
       const role = response.data.user.role;
       switch (role) {
-        case "instructor":
+        case "course instructor":
           break;
-        case "coordinator":
+        case "course coordinator":
           // redirect to coordinator page
           break;
-        case "hod":
+        case "head of department":
           // redirect to hod page
           break;
         default:
@@ -126,14 +142,30 @@ export const Login = () => {
             variant="outlined"
             onChange={(e) => setUsername(e.target.value)}
           />
-          <TextField
+          <FormControl sx={{ m: 1,  }} variant="outlined" fullWidth>
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
             label="Password"
-            type="password"
-            fullWidth
             value={password}
-            variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
+           
           />
+        </FormControl>
+         
           <Button
             sx={{ textTransform: "none" }}
             size="large"

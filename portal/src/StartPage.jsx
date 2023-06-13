@@ -22,7 +22,7 @@ const navigate=useNavigate()
         Web Based Course Folders Management System
         </Typography>
 
-        <Stack mt={10} direction={"row"} spacing={3} alignItems={"center"} justifyContent={"center"}>
+        <Stack mt={10}  direction={"row"} spacing={3} alignItems={"center"} justifyContent={"center"}>
         <Box>
             <CardComponent  title={"Course Instructor"} image={instructor} onClick={(e)=>navigate('/InsLogin')}/>
 
@@ -32,11 +32,12 @@ const navigate=useNavigate()
 
         </Box>
         <Box>
-            <CardComponent  title={"Head of Department"} image={hod} onClick={(e)=>navigate('/HodLogin')}/>
+        <CardComponent  title={"Course Folder Coordinator"} image={folder} onClick={(e)=>navigate('/folderCoordinator')}/>
+
 
         </Box>
         <Box>
-            <CardComponent  title={"Course Folder Convenor"} image={folder} onClick={(e)=>navigate('/login')}/>
+        <CardComponent  title={"Head of Department"} image={hod} onClick={(e)=>navigate('/HodLogin')}/>
 
         </Box>
         </Stack>

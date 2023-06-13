@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     },
     role: {
       type: String,
-      enum: ["instructor", "coordinator", "hod", "convinier"],
+      enum: ["course instructor", "course coordinator", "head of department", "course folder coordinator"],
     },
   });
   

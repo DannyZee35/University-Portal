@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from 'react-toastify'
+
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { reset, login, register } from "../features/auth/authSlice";
@@ -11,10 +13,21 @@ import {
   TextField,
   Stack,
   Button,
+  Alert,
+  RadioGroup ,
+  FormControlLabel,
+  Radio,
+  FormControl,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  IconButton,
   Typography,
-  FormControl,RadioGroup,FormControlLabel,Radio
 } from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import custLogo from "../assets/cust.png"
+
 import { withAuth } from "./withAuth";
 import { alpha, styled } from "@mui/material/styles";
 
@@ -24,6 +37,7 @@ const drawerWidth = 300;
 
 export const SignUp=()=>{
     const navigate= useNavigate()
+    const [errorMessage, setErrorMessage] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
@@ -31,10 +45,19 @@ export const SignUp=()=>{
     const { user, isLoading, isError, isSuccess, message } = useSelector(
         (state) => state.auth
       )
-
+      const [showPassword, setShowPassword] = useState(false);
+   
+      const handleClickShowPassword = () => setShowPassword((show) => !show);
+    
+      const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      }
       useEffect(() => {
         if (isError) {
-          console.log(isError)
+          setErrorMessage(message);
+          dispatch(reset());
+    
+
         }
     
         if (isSuccess || user) {
@@ -56,24 +79,24 @@ export const SignUp=()=>{
       
           dispatch(register(userData));
         } catch (error) {
-          console.log(error);
+          setErrorMessage(message); // Set the error message
         }
       };
       
       useEffect(() => {
         if (isSuccess && role) {
           switch (role) {
-            case "instructor":
+            case "course instructor":
               navigate("/InstDashboard");
               break;
-            case "coordinator":
+            case "course coordinator":
               navigate("/dashboard");
               break;
-            case "hod":
+            case "head of department":
               navigate("/hod-dashboard");
               break;
-            case "convenor":
-              navigate("/convenor-dashboard");
+            case "course folder coordinator":
+              navigate("/folder-dashboard");
               break;
             default:
               navigate("/");
@@ -118,14 +141,29 @@ export const SignUp=()=>{
             variant="outlined"
             onChange={(e) => setUsername(e.target.value)}
           />
-          <TextField
+          <FormControl sx={{ m: 1,  }} variant="outlined" fullWidth>
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
             label="Password"
-            type="password"
-            fullWidth
             value={password}
-            variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
+           
           />
+        </FormControl>
            <Stack
             direction="row" // New stack direction
             justifyContent="center"
@@ -141,24 +179,24 @@ export const SignUp=()=>{
                 onChange={(e) => setRole(e.target.value)}
               >
                 <FormControlLabel
-                  value="instructor"
+                  value="course instructor"
                   control={<Radio />}
                   label="Course Instructor"
                 />
                 <FormControlLabel
-                  value="coordinator"
+                  value="course coordinator"
                   control={<Radio />}
                   label="Course Coordinator"
                 />
                 <FormControlLabel
-                  value="hod"
+                  value="head of department"
                   control={<Radio />}
                   label="Head of Department"
                 />
                 <FormControlLabel
-                  value="convenor"
+                  value="course folder coordinator"
                   control={<Radio />}
-                  label="Course Folder Convenor"
+                  label="Course Folder Coordinator"
                 />
               </RadioGroup>
             </FormControl>
@@ -180,10 +218,16 @@ export const SignUp=()=>{
           <Button sx={{textTransform:'none'}} size="large" onClick={(e)=>navigate('/')}> 
             Login
           </Button>
+ 
           </Stack>
           
         </Stack>
-      
+        {errorMessage && (
+   <Alert severity="error"> {errorMessage}</Alert>
+
+   
+ 
+)}
       </Box>
     </Container>
         

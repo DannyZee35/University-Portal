@@ -2,6 +2,7 @@ import axios from "axios";
 
 
 // Register user
+ 
 const register = async (userData) => {
   try {
     const response = await axios.post("http://localhost:5000/signup", userData);
@@ -12,18 +13,32 @@ const register = async (userData) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response); // Log the error response in the console
+
+    if (error.response && error.response.data && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error("Registration failed. Please try again.");
+    }
   }
 };
-
 
 const login = async (userData) => {
-  const response = await axios.post("http://localhost:5000/login", userData);
-  if (response.data) {
-    localStorage.setItem("token", JSON.stringify(response.data));
+  try {
+    const response = await axios.post("http://localhost:5000/login", userData);
+    if (response.data) {
+      localStorage.setItem("token", JSON.stringify(response.data));
+    }
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error("Login failed. Please try again.");
+    }
   }
-  return response.data;
 };
+
 
 // logout
 

@@ -8,7 +8,7 @@ const getAllCoursesByUser = async (req, res) => {
   const { role, id: userId } = req.user;
   try {
     let courses;
-    if (role === 'coordinator' || role === 'hod') {
+    if (role === 'course coordinator' || role === 'head of department' || role === 'course folder coordinator') {
       courses = await Course.find({});
     } else {
       courses = await Course.find({ Course_Instructor: userId });
@@ -36,7 +36,7 @@ const getSingleCourse = async (req, res) => {
     
     if (req.user.UserRole === 'instructor' && course.Course_Instructor.toString() !== req.user.id) {
       return res.status(401).json({ error: 'User Not Authorized' });
-    } else if (req.user.UserRole === 'coordinator') {
+    } else if (req.user.UserRole === 'course coordinator') {
       // Allow hod users to see all courses
     }
     

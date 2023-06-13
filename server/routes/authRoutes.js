@@ -3,9 +3,9 @@ const router=express.Router();
 const authController=require('../controller/authController');
 const {authMiddleware}=require('../middleware/auth');
 
-const allowedInstructorRoles = ['instructor'];
-const allowedHodRoles = ['hod'];
-const allowedCoordinatorRoles = ['coordinator'];
+const allowedInstructorRoles = ['course instructor'];
+const allowedHodRoles = ['head of department'];
+const allowedCoordinatorRoles = ['course coordinator'];
 
 router.get('/', authMiddleware(allowedInstructorRoles), authController.home);
 router.get('/hod', authMiddleware(allowedHodRoles), authController.hod);

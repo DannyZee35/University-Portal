@@ -11,8 +11,16 @@ import {
   TextField,
   Stack,
   Button,
+  FormControl,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  IconButton,
+  Alert,
   Typography,
 } from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import custLogo from "../assets/cust.png"
 
 import { alpha, styled } from "@mui/material/styles";
@@ -26,17 +34,25 @@ export const CoLogin=()=>{
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const { user, isLoading, isError, isSuccess, message } = useSelector(
       (state) => state.auth
     );
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
   
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    }
     useEffect(() => {
       if (isError) {
-        console.log(message);
+        setErrorMessage(error.response.data);
+
       }
-  
       if (isSuccess || user) {
         navigate("/dashboard");
       }
@@ -67,12 +83,12 @@ export const CoLogin=()=>{
         // redirect user based on role
         const role = response.data.user.role;
         switch (role) {
-          case "instructor":
+          case "course instructor":
             break;
-          case "coordinator":
+          case "course coordinator":
             // redirect to coordinator page
             break;
-          case "hod":
+          case "head of department":
             // redirect to hod page
             break;
           default:
@@ -80,7 +96,11 @@ export const CoLogin=()=>{
             break;
         }
       } catch (error) {
-        console.log(error);
+        setErrorMessage(error.response.data);
+        console.log(error.message);
+        if (error.response && error.response.status === 400) {
+          console.log(error.response.data);  
+        }
       }
     };
     const CssTextField = styled(TextField)({
@@ -134,14 +154,29 @@ export const CoLogin=()=>{
             variant="outlined"
             onChange={(e) => setUsername(e.target.value)}
           />
-          <TextField
+          <FormControl sx={{ m: 1,  }} variant="outlined" fullWidth>
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
             label="Password"
-            type="password"
-            fullWidth
             value={password}
-            variant="outlined"
             onChange={(e) => setPassword(e.target.value)}
+           
           />
+        </FormControl>
           <Button
             sx={{ textTransform: "none" }}
             size="large"
@@ -160,7 +195,14 @@ export const CoLogin=()=>{
           <Button sx={{textTransform:'none'}} size="large" onClick={(e)=>navigate('/signup')}> 
             Sign Up
           </Button>
+       
           </Stack>
+          {errorMessage && (
+   <Alert severity="error"> {errorMessage}</Alert>
+
+   
+ 
+)}
       </Box>
     </Container>
         
