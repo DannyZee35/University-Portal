@@ -82,6 +82,16 @@ const CourseSchema = mongoose.Schema({
       
       
     },
+    FolderCoordinatorFeedback:{
+        type: String,
+      
+      
+    },
+    HodFeedback:{
+        type: String,
+      
+      
+    },
     coordinator:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'

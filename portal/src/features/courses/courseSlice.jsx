@@ -90,8 +90,49 @@ export const updateCourse = createAsyncThunk(
     }
   }
 );
- 
+export const updateHodFeedback = createAsyncThunk(
+  "courses/updateHodFeedback",
+  async ({ id, updatedHodFeedbackData }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await courseService.updateHodFeedback(
+        id,
+        updatedHodFeedbackData,
+        token
+      );
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
+  export const updateFolderFeedback = createAsyncThunk(
+    "courses/updateFolderFeedback",
+    async ({ id, updatedFolderFeedbackData }, thunkAPI) => {
+      try {
+        const token = thunkAPI.getState().auth.user.token;
+        return await courseService.updateFolderFeedback(
+          id,
+          updatedFolderFeedbackData,
+          token
+        );
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  );
 export const courseSlice = createSlice({
   name: 'course',
   initialState,
@@ -161,6 +202,44 @@ export const courseSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      .addCase(updateHodFeedback.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateHodFeedback.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        const index = state.courses.findIndex(
+          (course) => course._id === action.payload._id
+        );
+        state.courses[index] = action.payload;
+        if (state.singleCourse._id === action.payload._id) {
+          state.singleCourse = action.payload;
+        }
+      })
+      .addCase(updateHodFeedback.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateFolderFeedback.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateFolderFeedback.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        const index = state.courses.findIndex(
+          (course) => course._id === action.payload._id
+        );
+        state.courses[index] = action.payload;
+        if (state.singleCourse._id === action.payload._id) {
+          state.singleCourse = action.payload;
+        }
+      })
+      .addCase(updateFolderFeedback.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      });
     
   }
 })

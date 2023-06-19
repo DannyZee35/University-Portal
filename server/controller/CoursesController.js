@@ -54,7 +54,7 @@ const getSingleCourse = async (req, res) => {
 
     try {
       // Find the course by ID
-      const course = await Course.findById(req.params.id).populate('coordinator', 'username role');
+      const course = await Course.findById(req.params.id);
 
       // Check if the course exists
       if (!course) {
@@ -80,8 +80,75 @@ const getSingleCourse = async (req, res) => {
     }
   };
 
+  const FolderUpdateCourse = async (req, res) => {
+    // Get the course ID from the request URL
+      const { status, FolderCoordinatorFeedback } = req.body; // Get the new status and feedback values from the request body
+      const coordinatorId = req.user._id; // Get the ID of the logged-in coordinator from the request user object
+  
+      try {
+        // Find the course by ID
+        const course = await Course.findById(req.params.id);
+  
+        // Check if the course exists
+        if (!course) {
+          return res.status(404).json({ message: 'Course not found' });
+        }
+  
+        // Update the course status and feedback
+        course.status = status;
+        course.FolderCoordinatorFeedback = FolderCoordinatorFeedback;
+  
+        // Update the coordinator ID only if it's not already set
+        if (!course.coordinator) {
+          course.coordinator = coordinatorId;
+        }
+  
+        // Save the updated course
+        await course.save();
+  
+        res.json(course);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+      }
+    };
+
+    const HodUpdateCourse = async (req, res) => {
+      // Get the course ID from the request URL
+        const { status, HodFeedback } = req.body; // Get the new status and feedback values from the request body
+        const coordinatorId = req.user._id; // Get the ID of the logged-in coordinator from the request user object
+    
+        try {
+          // Find the course by ID
+          const course = await Course.findById(req.params.id);
+    
+          // Check if the course exists
+          if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+          }
+    
+          // Update the course status and feedback
+          course.status = status;
+          course.HodFeedback = HodFeedback;
+    
+          // Update the coordinator ID only if it's not already set
+          if (!course.coordinator) {
+            course.coordinator = coordinatorId;
+          }
+    
+          // Save the updated course
+          await course.save();
+    
+          res.json(course);
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'Server Error' });
+        }
+      };
 module.exports = {
   getSingleCourse,
+  FolderUpdateCourse,
+  HodUpdateCourse,
   getAllCoursesByUser,
   updateCourse
 };

@@ -553,7 +553,7 @@ import {
                                             sx={{ fontSize: "18px", mt: 2 }}
                                             gutterBottom
                                         >
-                                            <strong>Feedback</strong>
+                                            <strong>Coordinator Feedback</strong>
                                         </Typography>
                                         <Typography
                                             variant="subtitle1"
@@ -584,7 +584,7 @@ import {
                                         sx={{ fontSize: "18px", mt: 2, mb: 3 }}
                                         gutterBottom
                                     >
-                                        <strong>Feedback</strong>
+                                        <strong>Coordinator Feedback</strong>
                                     </Typography>
                                     <TextField multiline rows={5} label="Feedback" fullWidth value={feedback} onChange={(e) => setFeedback(e.target.value)} />
                                     <Stack direction={"row"} alignItems={"center"} justifyContent={"flex-start"} gap="20px" sx={{ mt: 3 }}>
@@ -603,6 +603,48 @@ import {
           </Box>
             </>
  ) }
+ 
+{singleCourse.FolderCoordinatorFeedback &&
+
+<>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    <strong>Course Folder Coordinator Feedback</strong>
+  </Typography>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    {singleCourse.FolderCoordinatorFeedback}
+  </Typography>
+
+</>
+}
+
+{singleCourse.HodFeedback &&
+
+<>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    <strong>Head Of Department Feedback</strong>
+  </Typography>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    {singleCourse.HodFeedback}
+  </Typography>
+
+</>
+}
         </Container>
       </>
     );

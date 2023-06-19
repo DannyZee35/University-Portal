@@ -6,6 +6,12 @@ const FeedbackSchema = mongoose.Schema({
     feedback:{
         type:String,
     },
+    HodFeedback:{
+        type:String,
+    },
+    FolderCoordinatorFeedback:{
+        type:String,
+    },
     coordinator:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

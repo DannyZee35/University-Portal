@@ -556,7 +556,7 @@ import {
                                             sx={{ fontSize: "18px", mt: 2 }}
                                             gutterBottom
                                         >
-                                            <strong>Feedback</strong>
+                                            <strong>Coordinator Feedback</strong>
                                         </Typography>
                                         <Typography
                                             variant="subtitle1"
@@ -607,6 +607,49 @@ import {
                             </>
                             </>
           )}
+
+ 
+{singleCourse.FolderCoordinatorFeedback &&
+
+<>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    <strong>Course Folder Coordinator Feedback</strong>
+  </Typography>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    {singleCourse.FolderCoordinatorFeedback}
+  </Typography>
+
+</>
+}
+
+{singleCourse.HodFeedback &&
+
+<>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    <strong>Head Of Department Feedback</strong>
+  </Typography>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    {singleCourse.HodFeedback}
+  </Typography>
+
+</>
+}
         </Container>
       </>
     );

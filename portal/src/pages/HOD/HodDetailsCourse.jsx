@@ -11,11 +11,12 @@ import {
     TableHead,
     TableRow,
     Paper,
+    Button,TextField
   } from "@mui/material";
   import { useEffect, useState } from "react";
   import { useDispatch, useSelector } from "react-redux";
   import { useParams } from "react-router-dom";
-  import { getSingleCourse } from "../../features/courses/courseSlice";
+  import { getSingleCourse,updateHodFeedback } from "../../features/courses/courseSlice";
   import custLogo from "../../assets/cust.png"
   const drawerWidth = 300;
   
@@ -33,6 +34,26 @@ export const HodDetailsCourse=()=>{
     if (isLoading) {
       <CircularProgress />;
     }
+
+    const [status, setStatus] = useState(singleCourse.status);
+    const [hodFeedback, sethodFeedback] = useState(singleCourse.HodFeedback);
+    const [isEditing, setIsEditing] = useState(false);
+    
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      const updatedHodFeedbackData = {
+        HodFeedback: hodFeedback,
+        status: status
+      };
+    
+      console.log('handleSubmit called', id, updatedHodFeedbackData);
+    
+      await dispatch(updateHodFeedback({ id: id, updatedHodFeedbackData: updatedHodFeedbackData }));
+      setIsEditing(false);
+    
+      console.log('handleSubmit called', id, updatedHodFeedbackData);
+    };
     return(
         <>
                <Container
@@ -528,7 +549,7 @@ export const HodDetailsCourse=()=>{
                 sx={{ fontSize: "18px", mt: 2 }}
                 gutterBottom
               >
-                <strong>Feedback</strong>
+                <strong>Coordinator Feedback</strong>
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -540,7 +561,82 @@ export const HodDetailsCourse=()=>{
            
             </>
           }
+    {singleCourse.FolderCoordinatorFeedback &&
 
+<>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    <strong>Course Folder Coordinator Feedback</strong>
+  </Typography>
+  <Typography
+    variant="subtitle1"
+    sx={{ fontSize: "18px", mt: 2 }}
+    gutterBottom
+  >
+    {singleCourse.FolderCoordinatorFeedback}
+  </Typography>
+
+</>
+}
+<>
+                  {!isEditing && (
+                    <>
+                      <Typography variant="subtitle1" sx={{ fontSize: "18px", mt: 2 }} gutterBottom>
+                        <strong>Head Of Department Feedback</strong>
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ fontSize: "18px", mt: 2 }} gutterBottom>
+                        {singleCourse.HodFeedback}
+                      </Typography>
+
+                      <Button
+                        onClick={() => {
+                          setIsEditing(true);
+                          sethodFeedback(singleCourse.HodFeedback);
+                        }}
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        sx={{ textTransform: "none" }}
+                      >
+                        Edit
+                      </Button>
+                    </>
+                  )}
+
+                  {isEditing && (
+                    <form onSubmit={handleSubmit}>
+                      <Typography variant="subtitle1" sx={{ fontSize: "18px", mt: 2, mb: 3 }} gutterBottom>
+                        <strong>Course Folder Coordinator Feedback</strong>
+                      </Typography>
+                      <TextField multiline rows={5} label="Feedback" fullWidth value={hodFeedback} onChange={(e) => sethodFeedback(e.target.value)} />
+                      <Stack direction={"row"} alignItems={"center"} justifyContent={"flex-start"} gap="20px" sx={{ mt: 3 }}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="success"
+                          size="large"
+                          sx={{ textTransform: "none" }}
+                          onClick={() => setStatus("Approved")}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="error"
+                          size="large"
+                          sx={{ textTransform: "none" }}
+                          onClick={() => setStatus("Un Approved")}
+                        >
+                          Reject
+                        </Button>
+                      </Stack>
+                    </form>
+                  )}
+                </>
         </Box>
         </>
         )}

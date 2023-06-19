@@ -82,11 +82,40 @@ const getCourses = async (token) => {
   
     return response.data
   }
+
+ 
+ 
+  export const updateHodFeedback = async (id, updatedHodFeedbackData, token) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/HodFeedback/${id}`, updatedHodFeedbackData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+  
+  export const updateFolderFeedback = async (id, updatedFolderFeedbackData, token) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/FolderFeedback/${id}`, updatedFolderFeedbackData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
 const courseService = {
   create_Course,getCourses,
   getSingleCourse,
   updateCourse,
-   
+  updateHodFeedback,
+  updateFolderFeedback
 };
 
 export default courseService;
