@@ -110,12 +110,46 @@ const getCourses = async (token) => {
       throw error;
     }
   };
+
+
+  const addLogToCourse = async (id, logData, token) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/courses/${id}/logs`,
+        logData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+  
+ 
+ const getLogsForCourse = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.get(`http://localhost:5000/courses/${id}/logs`, config)
+
+  return response.data.logs;
+}
+   
 const courseService = {
   create_Course,getCourses,
   getSingleCourse,
   updateCourse,
   updateHodFeedback,
-  updateFolderFeedback
+  updateFolderFeedback,
+  addLogToCourse,
+  getLogsForCourse
 };
 
 export default courseService;

@@ -144,7 +144,7 @@ export const FolderConvenier=()=>{
           spacing={3}
         >
           <img src={custLogo} height={200} width={200}/>
-          <Typography variant="h3" color={"primary"}>
+          <Typography variant="h4" color={"primary"}>
           Course Folder Coordinator
           </Typography>
           <TextField

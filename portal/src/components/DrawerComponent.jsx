@@ -15,7 +15,7 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import TaskAltRoundedIcon from '@mui/icons-material/TaskAltRounded';
-
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 
 const drawerWidth = 300;
@@ -36,6 +36,7 @@ export const DrawerComponent = () => {
       visible: user?.UserRole === "course instructor",
       icon:  <DashboardRoundedIcon/>
     },
+ 
     {
       title: "Courses",
       to: "/courses",

@@ -17,7 +17,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSingleCourse, updateCourse } from "../../features/courses/courseSlice";
+import { getSingleCourse, updateCourse,getLogsForCourse } from "../../features/courses/courseSlice";
 import custLogo from "../../assets/cust.png"
 
 const drawerWidth = 300;
@@ -26,6 +26,12 @@ const drawerWidth = 300;
 export const CoSingleCourse = ({ course }) => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const logs = useSelector((state) => state.course.singleCourse.logs || []);
+
+
+    useEffect(() => {
+      dispatch(getLogsForCourse({ id: id }));
+    }, [dispatch, id]);
 
     const { singleCourse, isLoading } = useSelector((state) => state.course);
     useEffect(() => {
@@ -97,35 +103,35 @@ export const CoSingleCourse = ({ course }) => {
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Course Title:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  </strong> {singleCourse.courseTitle}
+              <strong>Course Title:&nbsp; &nbsp;</strong> {singleCourse.courseTitle}
             </Typography>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Course Code:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.courseCode}
+              <strong>Course Code:&nbsp; &nbsp;</strong> {singleCourse.courseCode}
             </Typography>{" "}
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Section No:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.Section_no}
+              <strong>Section No:&nbsp; &nbsp;</strong> {singleCourse.Section_no}
             </Typography>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Instructor Name:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.Instructor_name}
+              <strong>Instructor Name:&nbsp; &nbsp;</strong> {singleCourse.Instructor_name}
             </Typography>
             <Typography
               variant="subtitle1"
               sx={{ fontSize: "18px" }}
               gutterBottom
             >
-              <strong>Semester No:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;     </strong> {singleCourse.semester_no}
+              <strong>Semester No:&nbsp; &nbsp;</strong> {singleCourse.semester_no}
             </Typography>
           </Stack>
           <Typography
@@ -202,39 +208,36 @@ export const CoSingleCourse = ({ course }) => {
             {singleCourse.evaluation_criteria}
           </Typography>
 
-          <TableContainer
-            sx={{ border: "2px solid black", mt: 3, mb: 5 }}
-            component={Paper}
-          >
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: "bold" }}>Lecture No</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }} align="left">
-                    Date
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }} align="left">
-                    Duration
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }} align="left">
-                    Topics Covered
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    {singleCourse.lectureNo}
-                  </TableCell>
-                  <TableCell align="left">{singleCourse.Date}</TableCell>
-                  <TableCell align="left">{singleCourse.Duration}</TableCell>
-                  <TableCell align="left">
-                    {singleCourse.Topics_Covered}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <TableContainer >
+                  <Table sx={{border:"1px solid black"}}>
+                    <TableHead sx={{backgroundColor:'#8DB3E2' }}>
+                      <TableRow  >
+                      <TableCell sx={{border:"1px solid black",fontWeight:"bold"}}>Lecture No</TableCell>
+
+                        <TableCell sx={{border:"1px solid black",fontWeight:"bold"}}>Date</TableCell>
+                        <TableCell sx={{border:"1px solid black" ,fontWeight:"bold"}}>Duration</TableCell>
+                        <TableCell sx={{border:"1px solid black" ,fontWeight:"bold"}}>Topics Covered</TableCell>
+                        <TableCell sx={{border:"1px solid black" ,fontWeight:"bold"}}>Evaluation Instruments Used</TableCell>
+
+                      </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {logs.map((log) => (
+                        <TableRow key={log.lectureNo}>
+                          <TableCell sx={{border:"1px solid black"}}>{log.lectureNo}</TableCell>
+                          <TableCell sx={{border:"1px solid black"}}>{log.Date}</TableCell>
+                          <TableCell sx={{border:"1px solid black"}}>{log.Duration}</TableCell>
+
+                          <TableCell sx={{border:"1px solid black"}}>{log.Topics_Covered}</TableCell>
+                          <TableCell sx={{border:"1px solid black"}}>{log.instruments}</TableCell>
+
+                        </TableRow>
+                      ))}
+                    </TableBody>
+
+                  </Table>
+                </TableContainer>
 
 
           <Box sx={{ mb: 10, mt: 3, height: '400px', width: '600px' }} >

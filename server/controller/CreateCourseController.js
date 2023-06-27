@@ -18,10 +18,8 @@ const createCourse = async (req, res,next) => {
     contents,
     ref_books,
     evaluation_criteria,
-    lectureNo,
-    Date,
-    Duration,
-    Topics_Covered,
+
+    
     status,
    
     attendance_record,
@@ -106,12 +104,10 @@ const createCourse = async (req, res,next) => {
       contents,
       ref_books,
       evaluation_criteria,
-      lectureNo,
-      Date,
-      Duration,
-      Topics_Covered,
+     
       status,
-  
+   
+      
     
       attendance_record: {
         url: result.url, 
@@ -184,6 +180,10 @@ const createCourse = async (req, res,next) => {
     });
 
     const savedCourse = await course.save();
+
+  
+    
+    
     res.status(201).json(savedCourse);
   } catch (error) {
     console.error(error);

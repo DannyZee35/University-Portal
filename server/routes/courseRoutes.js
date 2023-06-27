@@ -4,7 +4,7 @@ const { authMiddleware } = require('../middleware/auth');
 
 const CreateCourseController = require('../controller/CreateCourseController');
 const CoursesController = require('../controller/CoursesController');
- 
+const LogsController = require('../controller/LogController');
 
 
 const allowedInstructorRoles = ['course instructor'];
@@ -19,5 +19,8 @@ router.get('/courses/:id', authMiddleware(allowedRoles), CoursesController.getSi
 router.put('/feedback/:id', authMiddleware(allowedCoordinatorRoles), CoursesController.updateCourse);
 router.put('/HodFeedback/:id', authMiddleware(allowedHodRoles), CoursesController.HodUpdateCourse);
 router.put('/FolderFeedback/:id', authMiddleware(allowedFolderRoles), CoursesController.FolderUpdateCourse);
+router.post('/courses/:id/logs', authMiddleware(allowedInstructorRoles), LogsController.createCourseLog);
+router.get('/courses/:id/logs', authMiddleware(allowedRoles), LogsController.getCourseLogs);
+ 
 
 module.exports = router;

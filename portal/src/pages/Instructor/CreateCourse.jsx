@@ -24,10 +24,7 @@ export const CreateCourse = () => {
     contents: "",
     ref_books: "",
     evaluation_criteria: "",
-    lectureNo: "",
-    Date: "",
-    Duration: "",
-    Topics_Covered: "",
+ 
     attendance_record: "",
     ref_of_lectureNotes: "",
     assignmentTask: "",
@@ -154,10 +151,7 @@ export const CreateCourse = () => {
       contents: "",
       ref_books: "",
       evaluation_criteria: "",
-      lectureNo: "",
-      Date: "",
-      Duration: "",
-      Topics_Covered: "",
+     
       attendance_record: "",
       ref_of_lectureNotes: "",
       assignmentTask: "",
@@ -197,10 +191,7 @@ export const CreateCourse = () => {
       formData.set('contents', CourseForm.contents);
       formData.set('ref_books', CourseForm.ref_books);
       formData.set('evaluation_criteria', CourseForm.evaluation_criteria);
-      formData.set('lectureNo', CourseForm.lectureNo);
-      formData.set('Date', CourseForm.Date);
-      formData.set('Duration', CourseForm.Duration);
-      formData.set('Topics_Covered', CourseForm.Topics_Covered);
+    
       formData.set('attendance_record', CourseForm.attendance_record);
       formData.set('ref_of_lectureNotes', CourseForm.ref_of_lectureNotes);
       formData.set('assignmentTask', CourseForm.assignmentTask);
@@ -370,47 +361,7 @@ export const CreateCourse = () => {
               onChange={handleChange}
             />
 
-            <Stack
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              spacing={4}
-            >
-              <TextField
-                type="number"
-                label="Lecture No"
-                name={"lectureNo"}
-                value={CourseForm.lectureNo}
-                onChange={handleChange}
-              />
-              <TextField
-                type="text"
-                label="YYYY/MM/DD"
-                name={"Date"}
-                value={CourseForm.Date}
-                onChange={handleChange}
-              />
-              <TextField
-                type="text"
-                label="Duration"
-                name={"Duration"}
-                value={CourseForm.Duration}
-                onChange={handleChange}
-              />
-            </Stack>
-            <Typography sx={{ color: "black" }} variant="h5">
-              Topics Covered
-            </Typography>
-            <TextField
-              type="text"
-              sx={{ width: "800px" }}
-              label="Topics Covered"
-              name={"Topics_Covered"}
-              multiline
-              rows={4}
-              value={CourseForm.Topics_Covered}
-              onChange={handleChange}
-            />
+          
 
             <Stack direction="row"
               justifyContent="flex-start"

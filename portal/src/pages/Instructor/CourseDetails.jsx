@@ -10,24 +10,65 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSingleCourse } from "../../features/courses/courseSlice";
+import { getSingleCourse, addLogToCourse, getLogsForCourse } from "../../features/courses/courseSlice";
 import custLogo from "../../assets/cust.png"
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 const drawerWidth = 300;
 
 export const CourseDetails = () => {
   const { id } = useParams();
+
+
   const dispatch = useDispatch();
+  const [accordionVisible, setAccordionVisible] = useState(false);
 
   const { singleCourse, isLoading } = useSelector((state) => state.course);
+  const logs = useSelector((state) => state.course.singleCourse.logs || []);
+
+
+  useEffect(() => {
+    dispatch(getLogsForCourse({ id: id }));
+  }, [dispatch, id]);
+
+
   useEffect(() => {
     dispatch(getSingleCourse(id))
   }, [dispatch, id]);
+
+  const toggleAccordion = () => {
+    setAccordionVisible(!accordionVisible);
+  };
+
+  const [logData, setLogData] = useState({
+    lectureNo: '',
+    Date: '',
+    Duration: '',
+    Topics_Covered: '',
+    instruments: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLogData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addLogToCourse({ id, logData }));
+  };
+
 
   if (isLoading) {
     <CircularProgress />;
@@ -58,7 +99,6 @@ export const CourseDetails = () => {
                   Web Based Course Folders Management System
                 </Typography>
                 <hr />
-
                 <Stack
                   direction={"column"}
                   alignItems={"flex-start"}
@@ -71,35 +111,35 @@ export const CourseDetails = () => {
                     sx={{ fontSize: "18px" }}
                     gutterBottom
                   >
-                    <strong>Course Title:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  </strong> {singleCourse.courseTitle}
+                    <strong>Course Title:&nbsp; &nbsp;</strong> {singleCourse.courseTitle}
                   </Typography>
                   <Typography
                     variant="subtitle1"
                     sx={{ fontSize: "18px" }}
                     gutterBottom
                   >
-                    <strong>Course Code:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.courseCode}
+                    <strong>Course Code:&nbsp; &nbsp;</strong> {singleCourse.courseCode}
                   </Typography>{" "}
                   <Typography
                     variant="subtitle1"
                     sx={{ fontSize: "18px" }}
                     gutterBottom
                   >
-                    <strong>Section No:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.Section_no}
+                    <strong>Section No:&nbsp; &nbsp;</strong> {singleCourse.Section_no}
                   </Typography>
                   <Typography
                     variant="subtitle1"
                     sx={{ fontSize: "18px" }}
                     gutterBottom
                   >
-                    <strong>Instructor Name:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   </strong> {singleCourse.Instructor_name}
+                    <strong>Instructor Name:&nbsp; &nbsp;</strong> {singleCourse.Instructor_name}
                   </Typography>
                   <Typography
                     variant="subtitle1"
                     sx={{ fontSize: "18px" }}
                     gutterBottom
                   >
-                    <strong>Semester No:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;     </strong> {singleCourse.semester_no}
+                    <strong>Semester No:&nbsp; &nbsp;</strong> {singleCourse.semester_no}
                   </Typography>
                 </Stack>
                 <Typography
@@ -176,40 +216,122 @@ export const CourseDetails = () => {
                   {singleCourse.evaluation_criteria}
                 </Typography>
 
-                <TableContainer
-                  sx={{ border: "2px solid black", mt: 3, mb: 5 }}
-                  component={Paper}
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontSize: "18px", mt: 2 }}
+                  gutterBottom
                 >
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: "bold" }}>Lecture No</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }} align="left">
-                          Date
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }} align="left">
-                          Duration
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }} align="left">
-                          Topics Covered
-                        </TableCell>
+                  <strong>Course Log</strong>
+                </Typography>
+                <TableContainer >
+                  <Table sx={{border:"1px solid black"}}>
+                    <TableHead sx={{backgroundColor:'#8DB3E2' }}>
+                      <TableRow  >
+                      <TableCell sx={{border:"1px solid black",fontWeight:"bold"}}>Lecture No</TableCell>
+
+                        <TableCell sx={{border:"1px solid black",fontWeight:"bold"}}>Date</TableCell>
+                        <TableCell sx={{border:"1px solid black" ,fontWeight:"bold"}}>Duration</TableCell>
+                        <TableCell sx={{border:"1px solid black" ,fontWeight:"bold"}}>Topics Covered</TableCell>
+                        <TableCell sx={{border:"1px solid black" ,fontWeight:"bold"}}>Evaluation Instruments Used</TableCell>
+
                       </TableRow>
                     </TableHead>
+
                     <TableBody>
-                      <TableRow>
-                        <TableCell component="th" scope="row">
-                          {singleCourse.lectureNo}
-                        </TableCell>
-                        <TableCell align="left">{singleCourse.Date}</TableCell>
-                        <TableCell align="left">{singleCourse.Duration}</TableCell>
-                        <TableCell align="left">
-                          {singleCourse.Topics_Covered}
-                        </TableCell>
-                      </TableRow>
+                      {logs.map((log) => (
+                        <TableRow key={log.lectureNo}>
+                          <TableCell sx={{border:"1px solid black"}}>{log.lectureNo}</TableCell>
+                          <TableCell sx={{border:"1px solid black"}}>{log.Date}</TableCell>
+                          <TableCell sx={{border:"1px solid black"}}>{log.Duration}</TableCell>
+
+                          <TableCell sx={{border:"1px solid black"}}>{log.Topics_Covered}</TableCell>
+                          <TableCell sx={{border:"1px solid black"}}>{log.instruments}</TableCell>
+
+                        </TableRow>
+                      ))}
                     </TableBody>
+
                   </Table>
                 </TableContainer>
 
+                
+                <Box>
+                  <Button variant="contained" sx={{ textTransform: 'none',mt:3 }} onClick={toggleAccordion}>
+                    Add Course Logs
+                  </Button>
+                  {accordionVisible && (
+                    <Box sx={{ mt: 5 }}>
+
+                      <form onSubmit={handleSubmit}>
+
+                        <Stack
+                          direction="row"
+                          justifyContent="flex-start"
+                          alignItems="flex-start"
+                          spacing={4}
+                        >
+                          <TextField
+                            type="number"
+                            id="lectureNo"
+                            name="lectureNo"
+                            value={logData.lectureNo}
+                            onChange={handleChange}
+                            required
+                            label="Lecture Number"
+
+
+                          />
+                          <TextField
+
+                            label="YYYY/MM/DD"
+                            type="text"
+                            id="date"
+                            name="Date"
+                            value={logData.Date}
+                            onChange={handleChange}
+                            required
+
+                          />
+                          <TextField
+                            type="text"
+                            id="duration"
+                            name="Duration"
+                            value={logData.Duration}
+                            onChange={handleChange}
+                            required
+                            label="Duration"
+
+                          />
+                          <TextField
+                            type="text"
+                            id="topicsCovered"
+                            name="Topics_Covered"
+                            value={logData.Topics_Covered}
+                            onChange={handleChange}
+                            required
+                            label="Topics Covered"
+
+                          />
+                          <TextField
+                            label="Instruments"
+                            type="text"
+                            id="instruments"
+                            name="instruments"
+                            value={logData.instruments}
+                            onChange={handleChange}
+                            required
+
+                          />
+                        </Stack>
+
+                        <Button sx={{ textTransform: "none", mt: 3 }} variant="contained" type="submit">Add Log</Button>
+                      </form>
+
+                    </Box>
+                  )}
+
+
+                </Box>
 
                 <Box sx={{ mb: 10, mt: 3, height: '400px', width: '600px' }} >
                   <Typography

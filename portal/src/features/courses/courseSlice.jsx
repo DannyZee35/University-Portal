@@ -133,6 +133,41 @@ export const updateHodFeedback = createAsyncThunk(
       }
     }
   );
+  export const addLogToCourse = createAsyncThunk(
+    "courses/addLog",
+    async ({ id, logData }, thunkAPI) => {
+      try {
+        const token = thunkAPI.getState().auth.user.token;
+        return await courseService.addLogToCourse(id, logData, token);
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  );
+
+  export const getLogsForCourse = createAsyncThunk(
+    "courses/getLogs",
+    async ({ id, token }, thunkAPI) => {
+      try {
+        const token = thunkAPI.getState().auth.user.token;
+
+        return await courseService.getLogsForCourse(id, token);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data && error.response.data.message) ||
+          error.message ||
+          error.toString();
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  );
+
 export const courseSlice = createSlice({
   name: 'course',
   initialState,
@@ -239,8 +274,54 @@ export const courseSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-      });
-    
+      })
+      .addCase(addLogToCourse.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addLogToCourse.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        const id = action.payload.id;
+        const log = action.payload.log;
+
+        // Find the course index in the courses array
+        const courseIndex = state.courses.findIndex(
+          (course) => course._id === id
+        );
+
+        if (courseIndex !== -1) {
+          // Add the log to the course's logs array
+          state.courses[courseIndex].logs.push(log);
+        }
+
+        // Update the singleCourse object if the updated course is the same as the single course being displayed
+        if (state.singleCourse._id === id) {
+          state.singleCourse.logs.push(log);
+        }
+      })
+      .addCase(addLogToCourse.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getLogsForCourse.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+        state.message = "";
+      })
+      .addCase(getLogsForCourse.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.singleCourse = { ...state.singleCourse, logs: action.payload };
+      })
+      .addCase(getLogsForCourse.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
+      }) 
   }
 })
 
